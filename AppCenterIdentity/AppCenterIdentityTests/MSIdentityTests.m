@@ -561,4 +561,20 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
   [identityMock stopMocking];
 }
 
+- (void)testSignOutInvokesDelegatesWithNilToken {
+  // If
+  id<MSAuthTokenContextDelegate> mockDelegate = OCMProtocolMock(@protocol(MSAuthTokenContextDelegate));
+  [[MSAuthTokenContext sharedInstance] addDelegate:mockDelegate];
+  id identityMock = OCMPartialMock(self.sut);
+  OCMStub([identityMock sharedInstance]).andReturn(identityMock);
+  OCMStub([identityMock removeAuthToken]).andDo(nil);
+  OCMStub([identityMock removeAccountId]).andDo(nil);
+
+  // When
+  [MSIdentity signOut];
+
+  // Then
+  OCMVerify([mockDelegate authTokenContext:OCMOCK_ANY didReceiveAuthToken:nil]);
+}
+
 @end
