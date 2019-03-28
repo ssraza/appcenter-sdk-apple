@@ -10,6 +10,9 @@ import AppCenter
  */
 @objc protocol AppCenterDelegate {
 
+  // Data Storage
+  func createDocument(_ document: String?)
+  
   // MSAppCenter section.
   func isAppCenterEnabled() -> Bool
   func setAppCenterEnabled(_ isEnabled: Bool)

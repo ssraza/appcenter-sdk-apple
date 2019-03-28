@@ -255,8 +255,15 @@ class MSMainViewController: UITableViewController, AppCenterProtocol {
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    
     if let destination = segue.destination as? AppCenterProtocol {
       destination.appCenter = appCenter
+    } else  {
+      for aController in  segue.destination.childViewControllers {
+        if let destination = aController as? AppCenterProtocol {
+          destination.appCenter = appCenter
+        }
+      }
     }
   }
 }

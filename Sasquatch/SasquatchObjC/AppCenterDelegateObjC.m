@@ -3,6 +3,7 @@
 
 #import "AppCenterDelegateObjC.h"
 #import "Constants.h"
+#import "UserSettings.h"
 
 #if GCC_PREPROCESSOR_MACRO_PUPPET
 #import "AppCenter.h"
@@ -16,6 +17,7 @@
 #import "MSAnalyticsInternal.h"
 #import "MSAppCenterInternal.h"
 #import "MSIdentityPrivate.h"
+#import "MSDataStore.h"
 
 #else
 @import AppCenter;
@@ -32,6 +34,33 @@
 @implementation AppCenterDelegateObjC
 
 #pragma mark - MSAppCenter section.
+
+
+
+
+- (void)createDocument:(NSString *)document{
+  
+  // Call Data Storage
+  NSString *partitionName = @"demo";
+  
+  NSArray *strings = [document componentsSeparatedByString:@","];
+  NSString* text = strings[0];
+  NSString* color = [strings count] > 1  ? strings[1] : @"default";
+  
+  int rand = (int)[[NSDate date] timeIntervalSince1970] % 100;
+  NSString *docId = [NSString stringWithFormat:@"docId_%d", rand];
+  
+  UserSettings *settings = [[UserSettings alloc] initWithText:text color:color];
+  
+  [MSDataStore replaceWithPartition:partitionName
+                         documentId:docId
+                           document:settings
+                  completionHandler:^(MSDocumentWrapper *_Nonnull document) {
+                    if (document != nil) {
+                      NSLog(@"blah blah");
+                    }
+                  }];
+}
 
 - (BOOL)isAppCenterEnabled {
   return [MSAppCenter isEnabled];
