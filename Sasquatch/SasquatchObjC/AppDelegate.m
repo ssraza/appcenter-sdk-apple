@@ -47,6 +47,21 @@ enum StartupMode { APPCENTER, ONECOLLECTOR, BOTH, NONE, SKIP };
 
 @end
 
+@implementation SomeObject
+
+@synthesize key = _key;
+
+- (instancetype)initFromDictionary:(NSDictionary *)dictionary {
+  self.key = ((NSDictionary *)dictionary[@"document"])[@"key"];
+  return self;
+}
+
+- (nonnull NSDictionary *)serializeToDictionary {
+  return [NSDictionary new];
+}
+
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -115,6 +130,10 @@ enum StartupMode { APPCENTER, ONECOLLECTOR, BOTH, NONE, SKIP };
 #else
   NSString *appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:kMSAppSecret] ?: kMSObjcAppSecret;
 #endif
+
+  NSString *url = @"https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1";
+  [MSDataStore setTokenExchangeUrl:url];
+
   switch (startTarget) {
   case APPCENTER:
     [MSAppCenter start:appSecret withServices:services];
@@ -145,6 +164,14 @@ enum StartupMode { APPCENTER, ONECOLLECTOR, BOTH, NONE, SKIP };
   // Set delegates.
   [self crashes];
   [self setAppCenterDelegate];
+
+  [MSDataStore readWithPartition:@"readonly"
+                      documentId:@"doc2"
+                    documentType:[SomeObject class]
+               completionHandler:^(MSDocumentWrapper *_Nonnull document) {
+                 SomeObject *myObject = [document deserializedValue];
+               }];
+
   return YES;
 }
 
