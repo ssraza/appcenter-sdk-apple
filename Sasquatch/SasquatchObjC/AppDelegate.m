@@ -52,7 +52,7 @@ enum StartupMode { APPCENTER, ONECOLLECTOR, BOTH, NONE, SKIP };
 @synthesize key = _key;
 
 - (instancetype)initFromDictionary:(NSDictionary *)dictionary {
-  self.key = ((NSDictionary *)dictionary[@"document"])[@"key"];
+  self.key = ((NSDictionary *)dictionary)[@"key"];
   return self;
 }
 
@@ -165,12 +165,21 @@ enum StartupMode { APPCENTER, ONECOLLECTOR, BOTH, NONE, SKIP };
   [self crashes];
   [self setAppCenterDelegate];
 
+  NSLog(@"Reading doc1 from readonly partition...");
   [MSDataStore readWithPartition:@"readonly"
-                      documentId:@"doc2"
+                      documentId:@"doc1"
                     documentType:[SomeObject class]
                completionHandler:^(MSDocumentWrapper *_Nonnull document) {
-                 SomeObject *myObject = [document deserializedValue];
+                 SomeObject* myObject = [document deserializedValue];
+                 NSLog(@"Doc1.key = %@", [myObject key]);
+                 
+                 [MSDataStore createWithPartition:@"demo" documentId:@"mydocid-1" document:myObject completionHandler:^(MSDocumentWrapper * _Nonnull document) {
+                   NSLog(@"Document created");
+                 }];
+                 
                }];
+  
+
 
   return YES;
 }
