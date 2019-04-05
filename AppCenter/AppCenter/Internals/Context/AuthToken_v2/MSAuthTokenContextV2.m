@@ -13,6 +13,11 @@
  */
 static NSString *const kMSAuthTokenHistoryKeyV2 = @"AuthTokenHistory";
 
+/*
+ * Length of accountId in home accountId.
+ */
+static NSUInteger const kMSAccountIdLengthInHomeAccount = 36;
+
 /**
  * Singleton.
  */
@@ -146,6 +151,9 @@ static dispatch_once_t onceToken;
     if (newUser && [delegate respondsToSelector:@selector(authTokenContext:didUpdateUserInformation:)]) {
       MSUserInformation *userInfo = nil;
       if (accountId) {
+        if ([accountId length] > kMSAccountIdLengthInHomeAccount) {
+          accountId = [accountId substringToIndex:kMSAccountIdLengthInHomeAccount];
+        }
         userInfo = [[MSUserInformation alloc] initWithAccountId:(NSString *)accountId];
       }
       [delegate authTokenContext:self didUpdateUserInformation:userInfo];

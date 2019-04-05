@@ -372,7 +372,7 @@
   [dateMock stopMocking];
 }
 
-# pragma mark - Helper
+#pragma mark - Helper
 
 - (NSDate *)dateAfterAnHour {
   NSDate *date = [NSDate date];
