@@ -5,9 +5,11 @@
 #import "AppCenter+Internal.h"
 #import "MSAppCenterIngestion.h"
 #import "MSAuthTokenContext.h"
+#import "MSAuthTokenContextV2.h"
 #import "MSChannelGroupDefaultPrivate.h"
 #import "MSChannelUnitConfiguration.h"
 #import "MSChannelUnitDefault.h"
+#import "MSChannelUnitDefaultPrivate.h"
 #import "MSLogDBStorage.h"
 
 static char *const kMSlogsDispatchQueue = "com.microsoft.appcenter.ChannelGroupQueue";
@@ -56,6 +58,7 @@ static char *const kMSlogsDispatchQueue = "com.microsoft.appcenter.ChannelGroupQ
                               withBlock:^(id<MSChannelDelegate> channelDelegate) {
                                 [channelDelegate channelGroup:self didAddChannelUnit:channel];
                               }];
+    [[MSAuthTokenContextV2 sharedInstance] addDelegate:channel];
   }
   return channel;
 }

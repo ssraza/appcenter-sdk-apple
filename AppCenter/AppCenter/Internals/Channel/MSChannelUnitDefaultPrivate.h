@@ -3,11 +3,12 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MSAuthTokenContextDelegateV2.h"
 #import "MSChannelUnitDefault.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MSChannelUnitDefault ()
+@interface MSChannelUnitDefault () <MSAuthTokenContextDelegateV2>
 
 @property(nonatomic) NSHashTable *pausedIdentifyingObjects;
 

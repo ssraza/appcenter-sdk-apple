@@ -6,6 +6,7 @@
 #import "MSAbstractLogInternal.h"
 #import "MSAppCenter.h"
 #import "MSAuthTokenContext.h"
+#import "MSAuthTokenContextV2.h"
 #import "MSAuthTokenInfo.h"
 #import "MSChannelDelegate.h"
 #import "MSChannelUnitConfiguration.h"
@@ -1247,7 +1248,7 @@ static NSString *const kMSTestGroupId = @"GroupId";
 
   // When
   dispatch_async(self.logsDispatchQueue, ^{
-    [self.sut flushQueue];
+    [self.sut flushQueueForAuthToken:nil];
     [self enqueueChannelEndJobExpectation];
   });
 

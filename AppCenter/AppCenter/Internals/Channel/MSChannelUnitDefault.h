@@ -3,6 +3,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MSAuthTokenHistoryInfo.h"
 #import "MSChannelUnitProtocol.h"
 #import "MSIngestionDelegate.h"
 
@@ -34,6 +35,13 @@ NS_ASSUME_NONNULL_BEGIN
  * Flush pending logs.
  */
 - (void)flushQueue;
+
+/**
+ * Flush pending logs for the give auth token.
+ *
+ * @param authToken The auth token for logs to flush.
+ */
+- (void)flushQueueForAuthToken:(MSAuthTokenHistoryInfo *__nullable)authToken;
 
 /**
  * Hash table of channel delegate.
