@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 #import "MSAppCenterInternal.h"
-#import "MSAuthTokenContext.h"
+#import "MSAuthTokenContextV2.h"
 #import "MSChannelUnitConfiguration.h"
 #import "MSConstants+Internal.h"
 #import "MSIdentityConfig.h"
@@ -68,6 +68,7 @@ static dispatch_once_t onceToken;
       transmissionTargetToken:(nullable NSString *)token
               fromApplication:(BOOL)fromApplication {
   [super startWithChannelGroup:channelGroup appSecret:appSecret transmissionTargetToken:token fromApplication:fromApplication];
+  [[MSAuthTokenContextV2 sharedInstance] start];
   MSLogVerbose([MSIdentity logTag], @"Started Identity service.");
 }
 
@@ -176,7 +177,7 @@ static dispatch_once_t onceToken;
                            andMessage:@"signIn is called while it's not configured or not in the foreground."];
     return;
   }
-  NSString *accountId = [[MSAuthTokenContext sharedInstance] accountId];
+  NSString *accountId = [[MSAuthTokenContextV2 sharedInstance] currentAuthTokenInfo].accountId;
   MSALAccount *account = [self retrieveAccountWithAccountId:accountId];
   if (account) {
     [self acquireTokenSilentlyWithMSALAccount:account];
@@ -323,7 +324,7 @@ static dispatch_once_t onceToken;
     MSLogWarning([MSIdentity logTag], @"Couldn't remove account data.");
     result = NO;
   }
-  [[MSAuthTokenContext sharedInstance] setAuthToken:nil withAccountId:nil expiresOn:nil];
+  [[MSAuthTokenContextV2 sharedInstance] setAuthToken:nil withAccountId:nil expiresOn:nil];
   return result;
 }
 
@@ -331,7 +332,7 @@ static dispatch_once_t onceToken;
   if (!self.clientApplication) {
     return NO;
   }
-  NSString *accountId = [[MSAuthTokenContext sharedInstance] accountId];
+  NSString *accountId = [[MSAuthTokenContextV2 sharedInstance] currentAuthTokenInfo].accountId;
   MSALAccount *account = [self retrieveAccountWithAccountId:accountId];
   if (account) {
     NSError *error;
@@ -357,9 +358,9 @@ static dispatch_once_t onceToken;
                       [strongSelf acquireTokenInteractively];
                     } else {
                       MSALAccountId *accountId = (MSALAccountId * __nonnull) result.account.homeAccountId;
-                      [[MSAuthTokenContext sharedInstance] setAuthToken:result.idToken
-                                                          withAccountId:accountId.identifier
-                                                              expiresOn:result.expiresOn];
+                      [[MSAuthTokenContextV2 sharedInstance] setAuthToken:result.idToken
+                                                            withAccountId:accountId.identifier
+                                                                expiresOn:result.expiresOn];
                       [strongSelf completeAcquireTokenRequestForResult:result withError:nil];
                       MSLogInfo([MSIdentity logTag], @"Silent acquisition of token succeeded.");
                     }
@@ -379,9 +380,9 @@ static dispatch_once_t onceToken;
                                     }
                                   } else {
                                     MSALAccountId *accountId = (MSALAccountId * __nonnull) result.account.homeAccountId;
-                                    [[MSAuthTokenContext sharedInstance] setAuthToken:result.idToken
-                                                                        withAccountId:accountId.identifier
-                                                                            expiresOn:result.expiresOn];
+                                    [[MSAuthTokenContextV2 sharedInstance] setAuthToken:result.idToken
+                                                                          withAccountId:accountId.identifier
+                                                                              expiresOn:result.expiresOn];
                                     MSLogInfo([MSIdentity logTag], @"User sign-in succeeded.");
                                   }
                                   [strongSelf completeAcquireTokenRequestForResult:result withError:e];
