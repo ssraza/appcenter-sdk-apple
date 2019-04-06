@@ -19,6 +19,11 @@ static NSString *const kMSAuthTokenHistoryKeyV2 = @"AuthTokenHistory";
 static NSUInteger const kMSAccountIdLengthInHomeAccount = 36;
 
 /**
+ * If the given number of seconds is left until the token expires, it indicates that it needs refreshing.
+ */
+static NSTimeInterval const kMSSecBeforeExpireToRefresh = 10 * 60;
+
+/**
  * Singleton.
  */
 static MSAuthTokenContextV2 *sharedInstance;
@@ -41,6 +46,8 @@ static dispatch_once_t onceToken;
     _delegates = [NSHashTable new];
     NSData *data = [MS_USER_DEFAULTS objectForKey:kMSAuthTokenHistoryKeyV2];
     if (data != nil) {
+
+      // TODO: Decrypt before assigning history.
       _authTokenHistory = (NSMutableArray *)[(NSObject *)[NSKeyedUnarchiver unarchiveObjectWithData:data] mutableCopy];
     }
     if (!_authTokenHistory) {
@@ -70,7 +77,7 @@ static dispatch_once_t onceToken;
                                                                       startTime:lastObject.expiresOn
                                                                       expiresOn:nil];
       [_authTokenHistory addObject:_currentAuthTokenInfo];
-      // Persist history
+      [self persistAuthTokenHistory];
     }
   }
   return self;
@@ -107,7 +114,7 @@ static dispatch_once_t onceToken;
     lastObjectBeforeTemporary.expiresOn = self.currentAuthTokenInfo.expiresOn;
     if ([lastObjectBeforeTemporary.expiresOn compare:startTime] == NSOrderedAscending) {
       self.currentAuthTokenInfo.temporary = NO;
-      [MS_USER_DEFAULTS setObject:[NSKeyedArchiver archivedDataWithRootObject:self.authTokenHistory] forKey:kMSAuthTokenHistoryKeyV2];
+      [self persistAuthTokenHistory];
     } else {
       self.currentAuthTokenInfo = lastObjectBeforeTemporary;
       [self.authTokenHistory removeLastObject];
@@ -119,7 +126,7 @@ static dispatch_once_t onceToken;
   @synchronized(self) {
     if (self.currentAuthTokenInfo.temporary) {
       self.currentAuthTokenInfo.temporary = NO;
-      [MS_USER_DEFAULTS setObject:[NSKeyedArchiver archivedDataWithRootObject:self.authTokenHistory] forKey:kMSAuthTokenHistoryKeyV2];
+      [self persistAuthTokenHistory];
     }
   }
 }
@@ -150,7 +157,7 @@ static dispatch_once_t onceToken;
       [self.authTokenHistory removeObjectAtIndex:0];
       MSLogVerbose([MSAppCenter logTag], @"Deleted oldest auth token from history due to full of history.");
     }
-    [MS_USER_DEFAULTS setObject:[NSKeyedArchiver archivedDataWithRootObject:self.authTokenHistory] forKey:kMSAuthTokenHistoryKeyV2];
+    [self persistAuthTokenHistory];
     synchronizedDelegates = self.delegates;
   }
   for (id<MSAuthTokenContextDelegateV2> delegate in synchronizedDelegates) {
@@ -168,6 +175,28 @@ static dispatch_once_t onceToken;
       [delegate authTokenContext:self didUpdateUserInformation:userInfo];
     }
   }
+}
+
+- (void)refreshCurrentAuthToken {
+  NSHashTable<id<MSAuthTokenContextDelegateV2>> *synchronizedDelegates = nil;
+  @synchronized(self) {
+    synchronizedDelegates = self.delegates;
+  }
+  if ([self.currentAuthTokenInfo.expiresOn compare:[NSDate dateWithTimeIntervalSinceNow:-kMSSecBeforeExpireToRefresh]] ==
+      NSOrderedDescending) {
+    for (id<MSAuthTokenContextDelegateV2> delegate in synchronizedDelegates) {
+      MSLogInfo([MSAppCenter logTag], @"The token needs to be refreshed.");
+      if ([delegate respondsToSelector:@selector(authTokenContext:refreshAuthTokenForAccountId:)]) {
+        [delegate authTokenContext:self refreshAuthTokenForAccountId:self.currentAuthTokenInfo.accountId];
+      }
+    }
+  }
+}
+
+- (void)persistAuthTokenHistory {
+
+  // TODO: Encrypt before storing history.
+  [MS_USER_DEFAULTS setObject:[NSKeyedArchiver archivedDataWithRootObject:self.authTokenHistory] forKey:kMSAuthTokenHistoryKeyV2];
 }
 
 @end

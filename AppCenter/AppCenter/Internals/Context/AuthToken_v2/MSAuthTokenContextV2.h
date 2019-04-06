@@ -69,6 +69,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)setAuthToken:(nullable NSString *)authToken withAccountId:(nullable NSString *)accountId expiresOn:(nullable NSDate *)expiresOn;
 
+/**
+ * Refresh current auth token if it expires soon.
+ */
+- (void)refreshCurrentAuthToken;
+
 @end
 
 NS_ASSUME_NONNULL_END

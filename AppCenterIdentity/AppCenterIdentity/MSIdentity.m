@@ -422,19 +422,19 @@ static dispatch_once_t onceToken;
 
 #pragma mark - MSAuthTokenContextDelegateV2
 
-// TODO: Implement this.
 - (void)authTokenContext:(MSAuthTokenContextV2 *)authTokenContext refreshAuthTokenForAccountId:(nullable NSString *)accountId {
-  (void)authTokenContext;
-  (void)accountId;
-  //  MSALAccount *account = [self retrieveAccountWithAccountId:accountId];
-  //  if (account) {
-  //    [self acquireTokenSilentlyWithMSALAccount:account];
-  //  } else {
-  //
-  //    // If account not found, start an anonymous session to avoid deadlock.
-  //    MSLogWarning([MSIdentity logTag],
-  //                 @"Could not get account for the accountId of the token that needs to be refreshed. Starting anonymous session.");
-  //    [authTokenContext setAuthToken:nil withAccountId:nil expiresOn:nil];
-  //  }
+  MSALAccount *account = [self retrieveAccountWithAccountId:accountId];
+  if (account) {
+    [self acquireTokenSilentlyWithMSALAccount:account];
+  } else {
+
+    // If account not found, start an anonymous session to avoid deadlock.
+    MSLogWarning([MSIdentity logTag],
+                 @"Could not get account for the accountId of the token that needs to be refreshed. Starting anonymous session.");
+
+    // TODO: Why do we need to set anonymous identity? It has an expiration, it would be valid until then.
+    [authTokenContext setAuthToken:nil withAccountId:nil expiresOn:nil];
+  }
 }
+
 @end
