@@ -283,6 +283,95 @@
   // TODO: Implement this unit test. This unit test requires to pre-configured history directly in history.
 }
 
+// TODO: Refresh isn't implemented yet. Enable unit tests after implementation.
+//- (void)testCheckIfTokenNeedsToBeRefreshedTokenIsNotlastTokenEntry {
+//  NSString *expectedAuthToken1 = @"authToken1";
+//  NSString *expectedAccountId1 = @"account1";
+//  NSString *expectedAuthToken2 = @"authToken2";
+//  id<MSAuthTokenContextDelegate> delegateMock = OCMProtocolMock(@protocol(MSAuthTokenContextDelegate));
+//  OCMReject([delegateMock authTokenContext:OCMOCK_ANY refreshAuthTokenForAccountId:OCMOCK_ANY]);
+//  [self.sut addDelegate:delegateMock];
+//
+//  // When
+//  [self.sut setAuthToken:expectedAuthToken1 withAccountId:expectedAccountId1 expiresOn:nil];
+//  MSAuthTokenValidityInfo *authToken = [[MSAuthTokenValidityInfo alloc] initWithAuthToken:expectedAuthToken2 startTime:nil endTime:nil];
+//  [self.sut checkIfTokenNeedsToBeRefreshed:authToken];
+//}
+//
+//- (void)testCheckIfTokenNeedsToBeRefreshed {
+//
+//  // If
+//  NSString *expectedAuthToken = @"authToken1";
+//  NSString *expectedAccountId = @"account1";
+//  NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow:-((60.0f * 60.0f * 24.0f))];
+//  NSDate *expiresDate = [NSDate dateWithTimeIntervalSinceNow:+(60.0f * 60.0f * 24.0f)];
+//  id<MSAuthTokenContextDelegate> delegateMock = OCMProtocolMock(@protocol(MSAuthTokenContextDelegate));
+//  [self.sut addDelegate:delegateMock];
+//  OCMReject([delegateMock authTokenContext:OCMOCK_ANY refreshAuthTokenForAccountId:OCMOCK_ANY]);
+//  [self.sut setAuthToken:expectedAuthToken withAccountId:expectedAccountId expiresOn:expiresDate];
+//  MSAuthTokenValidityInfo *authToken = [[MSAuthTokenValidityInfo alloc] initWithAuthToken:expectedAuthToken
+//                                                                                startTime:startDate
+//                                                                                  endTime:expiresDate];
+//
+//  // When
+//  [self.sut checkIfTokenNeedsToBeRefreshed:authToken];
+//}
+//
+//- (void)testExpiresSoonTrue {
+//
+//  // If
+//  NSString *expectedAuthToken = @"authToken1";
+//  NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow:-((60.0f * 60.0f * 24.0f) * 2)];
+//  NSDate *expiresDate = [NSDate dateWithTimeIntervalSinceNow:-(60.0f * 60.0f * 24.0f)];
+//  MSAuthTokenValidityInfo *authToken = [[MSAuthTokenValidityInfo alloc] initWithAuthToken:expectedAuthToken
+//                                                                                startTime:startDate
+//                                                                                  endTime:expiresDate];
+//
+//  // When
+//  bool *isExpiresSoon = [authToken expiresSoon];
+//
+//  // Then
+//  XCTAssertTrue(isExpiresSoon);
+//}
+//
+//- (void)testExpiresSoonFalse {
+//
+//  // If
+//  NSString *expectedAuthToken = @"authToken1";
+//  NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow:-((60.0f * 60.0f * 24.0f))];
+//  NSDate *expiresDate = [NSDate dateWithTimeIntervalSinceNow:+(60.0f * 60.0f * 24.0f)];
+//  MSAuthTokenValidityInfo *authToken = [[MSAuthTokenValidityInfo alloc] initWithAuthToken:expectedAuthToken
+//                                                                                startTime:startDate
+//                                                                                  endTime:expiresDate];
+//
+//  // When
+//  bool *isExpiresSoon = [authToken expiresSoon];
+//
+//  // Then
+//  XCTAssertFalse(isExpiresSoon);
+//}
+//
+//- (void)testRefreshAuthTokenForAccountId {
+//
+//  // If
+//  NSString *expectedAuthToken = @"authToken1";
+//  NSString *expectedAccountId = @"account1";
+//  NSDate *startDate = [NSDate dateWithTimeIntervalSinceNow:-((60.0f * 60.0f * 24.0f) * 2)];
+//  NSDate *expiresDate = [NSDate dateWithTimeIntervalSinceNow:+500];
+//  id<MSAuthTokenContextDelegate> delegateMock = OCMProtocolMock(@protocol(MSAuthTokenContextDelegate));
+//  [self.sut addDelegate:delegateMock];
+//  [self.sut setAuthToken:expectedAuthToken withAccountId:expectedAccountId expiresOn:expiresDate];
+//  MSAuthTokenValidityInfo *authToken = [[MSAuthTokenValidityInfo alloc] initWithAuthToken:expectedAuthToken
+//                                                                                startTime:startDate
+//                                                                                  endTime:expiresDate];
+//
+//  // When
+//  [self.sut checkIfTokenNeedsToBeRefreshed:authToken];
+//
+//  // Then
+//  OCMVerify([delegateMock authTokenContext:OCMOCK_ANY refreshAuthTokenForAccountId:expectedAccountId]);
+//}
+
 // TODO: Any other cases to cover in the unit tests?
 
 #pragma mark - Helper
