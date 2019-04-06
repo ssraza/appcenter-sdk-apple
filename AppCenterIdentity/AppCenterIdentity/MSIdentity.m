@@ -67,6 +67,7 @@ static dispatch_once_t onceToken;
                     appSecret:(nullable NSString *)appSecret
       transmissionTargetToken:(nullable NSString *)token
               fromApplication:(BOOL)fromApplication {
+  [[MSAuthTokenContext sharedInstance] preventResetAuthTokenAfterStart];
   [super startWithChannelGroup:channelGroup appSecret:appSecret transmissionTargetToken:token fromApplication:fromApplication];
   [[MSAuthTokenContextV2 sharedInstance] start];
   MSLogVerbose([MSIdentity logTag], @"Started Identity service.");
@@ -92,6 +93,7 @@ static dispatch_once_t onceToken;
 #if TARGET_OS_IOS
     [[MSAppDelegateForwarder sharedInstance] addDelegate:self.appDelegate];
 #endif
+    [[MSAuthTokenContext sharedInstance] addDelegate:self];
 
     // Read Identity config file.
     NSString *eTag = nil;
@@ -107,6 +109,7 @@ static dispatch_once_t onceToken;
 #if TARGET_OS_IOS
     [[MSAppDelegateForwarder sharedInstance] removeDelegate:self.appDelegate];
 #endif
+    [[MSAuthTokenContext sharedInstance] removeDelegate:self];
     [self clearAuthData];
     self.clientApplication = nil;
     [self clearConfigurationCache];
@@ -373,6 +376,7 @@ static dispatch_once_t onceToken;
                                 completionBlock:^(MSALResult *result, NSError *e) {
                                   typeof(self) strongSelf = weakSelf;
                                   if (e) {
+                                    [[MSAuthTokenContext sharedInstance] setAuthToken:nil withAccountId:nil expiresOn:nil];
                                     if (e.code == MSALErrorUserCanceled) {
                                       MSLogWarning([MSIdentity logTag], @"User canceled sign-in.");
                                     } else {
@@ -417,4 +421,18 @@ static dispatch_once_t onceToken;
   return account;
 }
 
+#pragma mark - MSAuthTokenContextDelegate
+
+- (void)authTokenContext:(MSAuthTokenContext *)authTokenContext refreshAuthTokenForAccountId:(nullable NSString *)accountId {
+  MSALAccount *account = [self retrieveAccountWithAccountId:accountId];
+  if (account) {
+    [self acquireTokenSilentlyWithMSALAccount:account];
+  } else {
+
+    // If account not found, start an anonymous session to avoid deadlock.
+    MSLogWarning([MSIdentity logTag],
+                 @"Could not get account for the accountId of the token that needs to be refreshed. Starting anonymous session.");
+    [authTokenContext setAuthToken:nil withAccountId:nil expiresOn:nil];
+  }
+}
 @end

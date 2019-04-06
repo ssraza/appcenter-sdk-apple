@@ -14,6 +14,7 @@
 #import "MSDeviceTracker.h"
 #import "MSStorage.h"
 #import "MSUtility+StringFormatting.h"
+#import "MSLogger.h"
 
 @implementation MSChannelUnitDefault
 
