@@ -96,8 +96,29 @@
 #pragma mark - MSAuthTokenContextDelegateV2
 
 - (void)authTokenContext:(MSAuthTokenContextV2 *)__unused authTokenContext didUpdateAuthToken:(NSString *)__unused authToken {
+  NSDate *lastExpiresOn = nil;
   MSLogDebug([MSAppCenter logTag], @"New auth token received, flushing queue.");
-  [self flushQueue];
+
+  // TODO: Auth token context isn't thread safe.
+  [[MSAuthTokenContextV2 sharedInstance] refreshCurrentAuthToken];
+  for (MSAuthTokenHistoryInfo *info in [MSAuthTokenContextV2 sharedInstance].authTokenHistory) {
+    if (!lastExpiresOn && [lastExpiresOn compare:(NSDate * __nonnull) info.startTime] == NSOrderedAscending) {
+      MSLogDebug([MSAppCenter logTag], @"Found a gap for anonymous. Flushing logs between startTime:%@, expiresOn:%@", lastExpiresOn,
+                 info.startTime);
+      dispatch_async(self.logsDispatchQueue, ^{
+        MSAuthTokenHistoryInfo *anonymousAuthTokenInfo = [[MSAuthTokenHistoryInfo alloc] initWithAuthToken:nil
+                                                                                                 accountId:nil
+                                                                                                 startTime:lastExpiresOn
+                                                                                                 expiresOn:info.startTime];
+        [self flushQueueForAuthToken:anonymousAuthTokenInfo];
+      });
+    }
+    lastExpiresOn = info.startTime;
+    dispatch_async(self.logsDispatchQueue, ^{
+      MSLogDebug([MSAppCenter logTag], @"Flushing logs between startTime:%@, expiresOn:%@", info.startTime, info.expiresOn);
+      [self flushQueueForAuthToken:info];
+    });
+  }
 }
 
 #pragma mark - Managing queue
@@ -199,28 +220,9 @@
 }
 
 - (void)flushQueue {
-  NSDate *lastExpiresOn = nil;
 
-  // TODO: Auth token context isn't thread safe.
-  [[MSAuthTokenContextV2 sharedInstance] refreshCurrentAuthToken];
-  for (MSAuthTokenHistoryInfo *info in [MSAuthTokenContextV2 sharedInstance].authTokenHistory) {
-    if (!lastExpiresOn && [lastExpiresOn compare:(NSDate * __nonnull) info.startTime] == NSOrderedAscending) {
-      MSLogDebug([MSAppCenter logTag], @"Found a gap for anonymous. Flushing logs between startTime:%@, expiresOn:%@", lastExpiresOn,
-                 info.startTime);
-      dispatch_async(self.logsDispatchQueue, ^{
-        MSAuthTokenHistoryInfo *anonymousAuthTokenInfo = [[MSAuthTokenHistoryInfo alloc] initWithAuthToken:nil
-                                                                                                 accountId:nil
-                                                                                                 startTime:lastExpiresOn
-                                                                                                 expiresOn:info.startTime];
-        [self flushQueueForAuthToken:anonymousAuthTokenInfo];
-      });
-    }
-    lastExpiresOn = info.startTime;
-    dispatch_async(self.logsDispatchQueue, ^{
-      MSLogDebug([MSAppCenter logTag], @"Flushing logs between startTime:%@, expiresOn:%@", info.startTime, info.expiresOn);
-      [self flushQueueForAuthToken:info];
-    });
-  }
+  // TODO: Should we flush all logs for all auth tokens?
+  [self flushQueueForAuthToken:[MSAuthTokenContextV2 sharedInstance].currentAuthTokenInfo];
 }
 
 - (void)flushQueueForAuthToken:(MSAuthTokenHistoryInfo *__nullable)authToken {
@@ -400,7 +402,7 @@
     // Flush the queue as needed.
     if (strongSelf) {
       if (strongSelf.itemsCount > 0) {
-        [strongSelf flushQueue];
+        [strongSelf flushQueueForAuthToken:[MSAuthTokenContextV2 sharedInstance].currentAuthTokenInfo];
       }
       [strongSelf resetTimer];
     }
