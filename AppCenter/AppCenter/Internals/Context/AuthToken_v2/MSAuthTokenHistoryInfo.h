@@ -3,12 +3,14 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MSHistoryInfo.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Represents token data entity.
  */
-@interface MSAuthTokenHistoryInfo : NSObject <NSCoding>
+@interface MSAuthTokenHistoryInfo : MSHistoryInfo
 
 /**
  * Account Id string.

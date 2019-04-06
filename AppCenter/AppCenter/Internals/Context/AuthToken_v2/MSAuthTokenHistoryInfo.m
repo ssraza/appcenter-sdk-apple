@@ -47,4 +47,9 @@ static NSString *const kMSTemporaryKey = @"temporaryKey";
   [coder encodeBool:self.temporary forKey:kMSTemporaryKey];
 }
 
+- (id)copyWithZone:(NSZone *)__unused zone {
+  id copy = [[[self class] alloc] initWithAuthToken:self.authToken accountId:self.accountId startTime:self.startTime expiresOn:self.expiresOn];
+  return copy;
+}
+
 @end
