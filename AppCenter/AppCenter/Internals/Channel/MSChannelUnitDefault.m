@@ -96,7 +96,7 @@
 #pragma mark - MSAuthTokenContextDelegateV2
 
 - (void)authTokenContext:(MSAuthTokenContextV2 *)__unused authTokenContext didUpdateAuthToken:(NSString *)__unused authToken {
-  MSLogDebug([MSAppCenter logTag], @"Auth token is updated. Flushing pending logs.");
+  MSLogDebug([MSAppCenter logTag], @"New auth token received, flushing queue.");
   [self flushQueue];
 }
 
@@ -200,6 +200,8 @@
 
 - (void)flushQueue {
   NSDate *lastExpiresOn = nil;
+
+  // TODO: Auth token context isn't thread safe.
   [[MSAuthTokenContextV2 sharedInstance] refreshCurrentAuthToken];
   for (MSAuthTokenHistoryInfo *info in [MSAuthTokenContextV2 sharedInstance].authTokenHistory) {
     if (!lastExpiresOn && [lastExpiresOn compare:(NSDate * __nonnull) info.startTime] == NSOrderedAscending) {

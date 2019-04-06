@@ -29,6 +29,7 @@ static NSTimeInterval const kMSSecBeforeExpireToRefresh = 10 * 60;
 static MSAuthTokenContextV2 *sharedInstance;
 static dispatch_once_t onceToken;
 
+// TODO: Remove V2 and replace old one. Expose static way to call methods instead of calling `sharedInstance`?
 @implementation MSAuthTokenContextV2
 
 + (instancetype)sharedInstance {
@@ -63,6 +64,7 @@ static dispatch_once_t onceToken;
     }
     if (lastObject == nil) {
       _currentAuthTokenInfo = [[MSAuthTokenHistoryInfo alloc] initWithAuthToken:nil accountId:nil startTime:startTime expiresOn:nil];
+      [_authTokenHistory addObject:_currentAuthTokenInfo];
     } else if (!lastObject.expiresOn && [startTime compare:(NSDate * __nonnull) lastObject.expiresOn] == NSOrderedAscending) {
       _currentAuthTokenInfo = [[MSAuthTokenHistoryInfo alloc] initWithAuthToken:nil
                                                                       accountId:nil
@@ -133,8 +135,9 @@ static dispatch_once_t onceToken;
 
 - (void)setAuthToken:(nullable NSString *)authToken withAccountId:(nullable NSString *)accountId expiresOn:(nullable NSDate *)expiresOn {
   NSHashTable<id<MSAuthTokenContextDelegateV2>> *synchronizedDelegates = nil;
-  BOOL newUser = ![self.currentAuthTokenInfo.accountId ?: @"" isEqualToString:accountId ?: @""];
+  BOOL newUser = NO;
   @synchronized(self) {
+    newUser = ![self.currentAuthTokenInfo.accountId ?: @"" isEqualToString:accountId ?: @""];
     NSDate *startTime = [NSDate date];
     if (newUser) {
       if (self.currentAuthTokenInfo.expiresOn == nil || [self.currentAuthTokenInfo.expiresOn compare:startTime] != NSOrderedAscending) {
@@ -194,9 +197,11 @@ static dispatch_once_t onceToken;
 }
 
 - (void)persistAuthTokenHistory {
+  @synchronized(self) {
 
-  // TODO: Encrypt before storing history.
-  [MS_USER_DEFAULTS setObject:[NSKeyedArchiver archivedDataWithRootObject:self.authTokenHistory] forKey:kMSAuthTokenHistoryKeyV2];
+    // TODO: Encrypt before storing history.
+    [MS_USER_DEFAULTS setObject:[NSKeyedArchiver archivedDataWithRootObject:self.authTokenHistory] forKey:kMSAuthTokenHistoryKeyV2];
+  }
 }
 
 @end
