@@ -129,7 +129,7 @@ static const NSUInteger kMSSchemaVersion = 4;
 
 - (NSUInteger)countLogsBeforeDate:(NSDate *)date {
   long long timestampMs = (long long)([date timeIntervalSince1970] * 1000);
-  NSMutableString *condition = [NSMutableString stringWithFormat:@"\"%@\" <= '%lld'", kMSTimestampColumnName, timestampMs];
+  NSMutableString *condition = [NSMutableString stringWithFormat:@"\"%@\" < '%lld'", kMSTimestampColumnName, timestampMs];
   return [self countEntriesForTable:kMSLogTableName condition:condition];
 }
 
