@@ -53,6 +53,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)start;
 
 /**
+ * Notify a log is enqueued.
+ *
+ * @discussion This method will remove temporary flag from current auth token info to handle auth token for the log in case Identity isn't
+ * started yet but there is a valid auth token info in the history.
+ */
+- (void)logEnqueued;
+
+/**
  * Set current auth token and account id.
  *
  * @param authToken token to be added to the storage.

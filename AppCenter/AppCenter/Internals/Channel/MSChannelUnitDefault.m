@@ -139,6 +139,9 @@
     return;
   }
 
+  // Readiness of auth token context.
+  [[MSAuthTokenContextV2 sharedInstance] logEnqueued];
+
   // Additional preparations for the log. Used to specify the session id and distribution group id.
   [self enumerateDelegatesForSelector:@selector(channel:prepareLog:)
                             withBlock:^(id<MSChannelDelegate> delegate) {

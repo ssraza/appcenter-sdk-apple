@@ -115,6 +115,15 @@ static dispatch_once_t onceToken;
   }
 }
 
+- (void)logEnqueued {
+  @synchronized(self) {
+    if (self.currentAuthTokenInfo.temporary) {
+      self.currentAuthTokenInfo.temporary = NO;
+      [MS_USER_DEFAULTS setObject:[NSKeyedArchiver archivedDataWithRootObject:self.authTokenHistory] forKey:kMSAuthTokenHistoryKeyV2];
+    }
+  }
+}
+
 - (void)setAuthToken:(nullable NSString *)authToken withAccountId:(nullable NSString *)accountId expiresOn:(nullable NSDate *)expiresOn {
   NSHashTable<id<MSAuthTokenContextDelegateV2>> *synchronizedDelegates = nil;
   BOOL newUser = ![self.currentAuthTokenInfo.accountId ?: @"" isEqualToString:accountId ?: @""];
