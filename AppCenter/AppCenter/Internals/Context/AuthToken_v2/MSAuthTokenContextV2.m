@@ -73,13 +73,6 @@ static dispatch_once_t onceToken;
       lastObject.expiresOn = startTime;
       _currentAuthTokenInfo.temporary = YES;
       [_authTokenHistory addObject:_currentAuthTokenInfo];
-    } else {
-      _currentAuthTokenInfo = [[MSAuthTokenHistoryInfo alloc] initWithAuthToken:nil
-                                                                      accountId:nil
-                                                                      startTime:lastObject.expiresOn
-                                                                      expiresOn:nil];
-      [_authTokenHistory addObject:_currentAuthTokenInfo];
-      [self persistAuthTokenHistory];
     }
   }
   return self;
@@ -107,20 +100,14 @@ static dispatch_once_t onceToken;
     if (!self.currentAuthTokenInfo.temporary) {
       return;
     }
-    NSDate *startTime = [NSDate date];
     MSAuthTokenHistoryInfo *lastObjectBeforeTemporary = nil;
     NSUInteger historyCount = [self.authTokenHistory count];
 
     // The history count always be more than 1. If it is less than or equal to 1, there is no temporary.
     lastObjectBeforeTemporary = [self.authTokenHistory objectAtIndex:historyCount - 2];
     lastObjectBeforeTemporary.expiresOn = self.currentAuthTokenInfo.expiresOn;
-    if ([lastObjectBeforeTemporary.expiresOn compare:startTime] == NSOrderedAscending) {
-      self.currentAuthTokenInfo.temporary = NO;
-      [self persistAuthTokenHistory];
-    } else {
-      self.currentAuthTokenInfo = lastObjectBeforeTemporary;
-      [self.authTokenHistory removeLastObject];
-    }
+    self.currentAuthTokenInfo = lastObjectBeforeTemporary;
+    [self.authTokenHistory removeLastObject];
   }
 }
 
