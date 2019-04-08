@@ -181,7 +181,7 @@
   XCTAssertEqualObjects([self.sut.authTokenHistory lastObject].accountId, expectedAccountId2);
   OCMVerify([delegateMock authTokenContext:self.sut
                   didUpdateUserInformation:[OCMArg checkWithBlock:^BOOL(id obj) {
-                    return [((MSUserInformation *)obj).accountId isEqualToString:expectedAccountId];
+                    return [((MSUserInformation *)obj).accountId isEqualToString:expectedAccountId2];
                   }]]);
 }
 
@@ -200,6 +200,62 @@
 
   // Then
   OCMVerifyAll(delegateMock);
+}
+
+- (void)testUpdatingExpiresOnForNewAccountId {
+
+  // If
+  NSString *expectedAuthToken1 = @"expectedAuthToken1";
+  NSString *expectedAccountId1 = @"expectedAccountId1";
+  NSString *expectedAuthToken2 = @"expectedAuthToken2";
+  NSString *expectedAccountId2 = @"expectedAccountId2";
+  NSString *expectedAuthToken3 = @"expectedAuthToken3";
+  NSString *expectedAccountId3 = @"expectedAccountId3";
+  NSUInteger count = [self.sut.authTokenHistory count];
+  NSArray<NSDate *> *startTime = @[
+    [NSDate dateWithTimeIntervalSince1970:0], [NSDate dateWithTimeIntervalSince1970:10000], [NSDate dateWithTimeIntervalSince1970:20000]
+  ];
+  NSArray<NSDate *> *expiresOn = @[
+    [NSDate dateWithTimeIntervalSince1970:15000], [NSDate dateWithTimeIntervalSince1970:25000], [NSDate dateWithTimeIntervalSince1970:35000]
+  ];
+
+  // TODO: Date mock isn't working properly so this is a workaround.
+  __block id dateMock = OCMClassMock([NSDate class]);
+  __block NSUInteger i = 0;
+  OCMStub([dateMock date]).andDo(^(NSInvocation *invocation) {
+    NSDate *result = startTime[i++];
+    [invocation setReturnValue:&result];
+    if (i >= [startTime count]) {
+      [dateMock stopMocking];
+    }
+  });
+
+  // When
+  [self.sut setAuthToken:expectedAuthToken1 withAccountId:expectedAccountId1 expiresOn:expiresOn[0]];
+  [self.sut setAuthToken:expectedAuthToken2 withAccountId:expectedAccountId2 expiresOn:expiresOn[1]];
+  [self.sut setAuthToken:expectedAuthToken3 withAccountId:expectedAccountId3 expiresOn:expiresOn[2]];
+
+  // Then
+  XCTAssertEqual(count + 3, [self.sut.authTokenHistory count]);
+  MSAuthTokenHistoryInfo *lastObject = self.sut.authTokenHistory.lastObject;
+  XCTAssertEqualObjects(expectedAuthToken3, lastObject.authToken);
+  XCTAssertEqualObjects(expectedAccountId3, lastObject.accountId);
+  XCTAssertEqualObjects(startTime[2], lastObject.startTime);
+  XCTAssertEqualObjects(expiresOn[2], lastObject.expiresOn);
+
+  MSAuthTokenHistoryInfo *secondObject = [self.sut.authTokenHistory objectAtIndex:[self.sut.authTokenHistory count] - 2];
+  XCTAssertEqualObjects(expectedAuthToken2, secondObject.authToken);
+  XCTAssertEqualObjects(expectedAccountId2, secondObject.accountId);
+  XCTAssertEqualObjects(startTime[1], secondObject.startTime);
+  XCTAssertEqualObjects(startTime[2], secondObject.expiresOn);
+
+  MSAuthTokenHistoryInfo *firstObject = [self.sut.authTokenHistory objectAtIndex:[self.sut.authTokenHistory count] - 3];
+  XCTAssertEqualObjects(expectedAuthToken1, firstObject.authToken);
+  XCTAssertEqualObjects(expectedAccountId1, firstObject.accountId);
+  XCTAssertEqualObjects(startTime[0], firstObject.startTime);
+  XCTAssertEqualObjects(startTime[1], firstObject.expiresOn);
+
+  [dateMock stopMocking];
 }
 
 - (void)testUpdatingExpiresOnForSameAccountId {
