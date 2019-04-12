@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 #import "MSDispatchTestUtil.h"
+#import <XCTest/XCTest.h>
 
 static const int kMSDispatchQueueWaitTime = 5;
 

@@ -60,7 +60,7 @@ static NSString *kMSDefaultServiceName = @"DefaultServiceName";
   if (!arraysDictionary[serviceName]) {
     arraysDictionary[serviceName] = [NSMutableDictionary new];
   }
-  arraysDictionary[serviceName][key] = array;
+  arraysDictionary[serviceName][key] = [array mutableCopy];
   return YES;
 }
 

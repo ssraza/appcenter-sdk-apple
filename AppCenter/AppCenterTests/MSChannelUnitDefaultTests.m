@@ -138,6 +138,7 @@ static NSString *const kMSTestGroupId = @"GroupId";
                                      beforeDate:OCMOCK_ANY
                               completionHandler:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
+        [invocation retainArguments];
         MSLoadDataCompletionHandler loadCallback;
 
         // Get ingestion block for later call.
@@ -229,6 +230,7 @@ static NSString *const kMSTestGroupId = @"GroupId";
                                      beforeDate:OCMOCK_ANY
                               completionHandler:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
+        [invocation retainArguments];
         MSLoadDataCompletionHandler loadCallback;
 
         // Get ingestion block for later call.
@@ -457,6 +459,7 @@ static NSString *const kMSTestGroupId = @"GroupId";
 
   // Set up mock and stubs.
   OCMStub([self.ingestionMock sendAsync:OCMOCK_ANY authToken:OCMOCK_ANY completionHandler:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+    [invocation retainArguments];
     MSLogContainer *container;
     [invocation getArgument:&container atIndex:2];
     if (container) {
@@ -470,6 +473,7 @@ static NSString *const kMSTestGroupId = @"GroupId";
                                      beforeDate:OCMOCK_ANY
                               completionHandler:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
+        [invocation retainArguments];
         MSLoadDataCompletionHandler loadCallback;
 
         // Mock load.
@@ -531,6 +535,7 @@ static NSString *const kMSTestGroupId = @"GroupId";
                                      beforeDate:OCMOCK_ANY
                               completionHandler:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
+        [invocation retainArguments];
         MSLoadDataCompletionHandler loadCallback;
 
         // Get ingestion block for later call.
@@ -1238,6 +1243,7 @@ static NSString *const kMSTestGroupId = @"GroupId";
                                      beforeDate:OCMOCK_ANY
                               completionHandler:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
+        [invocation retainArguments];
         [invocation getArgument:&excludedKeys atIndex:4];
       });
   [self.sut pauseSendingLogsWithToken:token];
@@ -1291,6 +1297,7 @@ static NSString *const kMSTestGroupId = @"GroupId";
                                      beforeDate:OCMOCK_ANY
                               completionHandler:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
+        [invocation retainArguments];
         [invocation getArgument:&dateAfter atIndex:(5)];
         [invocation getArgument:&dateBefore atIndex:(6)];
         [invocation getArgument:&completionHandler atIndex:7];
@@ -1461,6 +1468,7 @@ static NSString *const kMSTestGroupId = @"GroupId";
   self.sut.storage = self.storageMock = OCMProtocolMock(@protocol(MSStorage));
   OCMStub([self.storageMock saveLog:OCMOCK_ANY withGroupId:OCMOCK_ANY flags:MSFlagsPersistenceNormal])
       .andDo(^(NSInvocation *invocation) {
+        [invocation retainArguments];
         MSAbstractLog *log;
         [invocation getArgument:&log atIndex:2];
         actualUserId = log.userId;

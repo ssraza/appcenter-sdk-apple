@@ -254,6 +254,7 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
   NSString *expectedETag = @"newETag";
   NSData *newConfig = [NSJSONSerialization dataWithJSONObject:self.dummyConfigDic options:(NSJSONWritingOptions)0 error:nil];
   OCMStub([self.ingestionMock sendAsync:nil eTag:nil completionHandler:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+
     // Get ingestion block for later call.
     [invocation retainArguments];
     [invocation getArgument:&ingestionBlock atIndex:4];
@@ -459,6 +460,7 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
   OCMStub([identityMock sharedInstance]).andReturn(identityMock);
   OCMStub([identityMock canBeUsed]).andReturn(YES);
   OCMStub([self.clientApplicationMock acquireTokenForScopes:OCMOCK_ANY completionBlock:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+    [invocation retainArguments];
     __block MSALCompletionBlock completionBlock;
     [invocation getArgument:&completionBlock atIndex:3];
     completionBlock(msalResultMock, nil);
@@ -624,6 +626,7 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
   OCMStub([configMock identityScope]).andReturn(@"fake");
   OCMStub([identityMock identityConfig]).andReturn(configMock);
   OCMStub([self.clientApplicationMock acquireTokenForScopes:OCMOCK_ANY completionBlock:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+    [invocation retainArguments];
     __block MSALCompletionBlock completionBlock;
     [invocation getArgument:&completionBlock atIndex:3];
     self.msalCompletionBlock = completionBlock;
@@ -668,6 +671,7 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
   OCMStub([msalResultMock idToken]).andReturn(expectedAuthToken);
   OCMStub([self.clientApplicationMock acquireTokenSilentForScopes:OCMOCK_ANY account:accountMock completionBlock:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
+        [invocation retainArguments];
         __block MSALCompletionBlock completionBlock;
         [invocation getArgument:&completionBlock atIndex:4];
         completionBlock(msalResultMock, nil);
@@ -706,6 +710,7 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
   OCMStub([identityMock canBeUsed]).andReturn(YES);
   OCMStub([self.clientApplicationMock acquireTokenSilentForScopes:OCMOCK_ANY account:OCMOCK_ANY completionBlock:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
+        [invocation retainArguments];
         __block MSALCompletionBlock completionBlock;
         [invocation getArgument:&completionBlock atIndex:4];
         completionBlock(msalResultMock, OCMOCK_ANY);
@@ -791,6 +796,7 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
   OCMStub([identityMock sharedInstance]).andReturn(identityMock);
   OCMStub([identityMock canBeUsed]).andReturn(YES);
   OCMStub([self.clientApplicationMock acquireTokenForScopes:OCMOCK_ANY completionBlock:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+    [invocation retainArguments];
     __block MSALCompletionBlock completionBlock;
     [invocation getArgument:&completionBlock atIndex:3];
     self.msalCompletionBlock = completionBlock;
@@ -850,6 +856,7 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
   OCMStub([identityMock sharedInstance]).andReturn(identityMock);
   OCMStub([identityMock canBeUsed]).andReturn(YES);
   OCMStub([self.clientApplicationMock acquireTokenForScopes:OCMOCK_ANY completionBlock:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+    [invocation retainArguments];
     __block MSALCompletionBlock completionBlock;
     [invocation getArgument:&completionBlock atIndex:3];
     completionBlock(nil, signInError);
@@ -889,6 +896,7 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
   OCMStub([identityMock sharedInstance]).andReturn(identityMock);
   OCMStub([identityMock canBeUsed]).andReturn(YES);
   OCMStub([self.clientApplicationMock acquireTokenForScopes:OCMOCK_ANY completionBlock:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+    [invocation retainArguments];
     __block MSALCompletionBlock completionBlock;
     [invocation getArgument:&completionBlock atIndex:3];
     completionBlock(nil, signInError);
@@ -928,6 +936,7 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
   OCMStub([identityMock sharedInstance]).andReturn(identityMock);
   OCMStub([identityMock canBeUsed]).andReturn(YES);
   OCMStub([self.clientApplicationMock acquireTokenForScopes:OCMOCK_ANY completionBlock:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+    [invocation retainArguments];
     __block MSALCompletionBlock completionBlock;
     [invocation getArgument:&completionBlock atIndex:3];
     self.msalCompletionBlock = completionBlock;
