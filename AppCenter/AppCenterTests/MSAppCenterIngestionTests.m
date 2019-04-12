@@ -70,6 +70,9 @@ static NSString *const kMSTestAppSecret = @"TestAppSecret";
    * Setting the variable to nil. We are experiencing test failure on Xcode 9 beta because the instance that was used for previous test
    * method is not disposed and still listening to network changes in other tests.
    */
+  [self.sut.pendingCalls removeAllObjects];
+  [MS_NOTIFICATION_CENTER removeObserver:self.sut name:kMSReachabilityChangedNotification object:nil];
+  [self.sut.session finishTasksAndInvalidate];
   self.sut = nil;
 }
 
