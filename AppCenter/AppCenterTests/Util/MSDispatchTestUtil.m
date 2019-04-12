@@ -3,7 +3,7 @@
 
 #import "MSDispatchTestUtil.h"
 
-static const int kMSDispatchQueueWaitTime = 2;
+static const int kMSDispatchQueueWaitTime = 5;
 
 @implementation MSDispatchTestUtil
 
