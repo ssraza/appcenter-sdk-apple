@@ -513,7 +513,7 @@
 					};
 					B21A71DA1DD2A38C0044BB1C = {
 						CreatedOnToolsVersion = 8.1;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -578,7 +578,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Scripts/VerifyNoBuildSettings.swift\" ${PROJECT_NAME}.xcodeproj/project.pbxproj\n";
+			shellScript = "
+";
 			showEnvVarsInLog = 0;
 		};
 		C2B2102A21B6C30B00F116BD /* Verify no buildSettings */ = {
@@ -783,6 +784,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = CrashLib/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.CrashLibIOS;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -792,6 +794,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = CrashLib/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.CrashLibIOS;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

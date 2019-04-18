@@ -38,7 +38,7 @@ extension XCUIElement {
   func clearAndTypeText(_ text: String) {
     self.tap()
     if let stringValue = self.value as? String {
-      self.typeText(stringValue.characters.map { _ in XCUIKeyboardKeyDelete }.joined(separator: ""))
+      self.typeText(stringValue.characters.map { _ in convertFromXCUIKeyboardKey(XCUIKeyboardKey.delete) }.joined(separator: ""))
     }
     self.typeText(text)
   }
@@ -76,4 +76,9 @@ extension XCTestCase {
       }
     }
   }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromXCUIKeyboardKey(_ input: XCUIKeyboardKey) -> String {
+	return input.rawValue
 }

@@ -187,8 +187,11 @@ class MSCrashesViewController: UITableViewController, UIImagePickerControllerDel
     }
   }
   
-  @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-    let referenceUrl = info[UIImagePickerControllerReferenceURL] as? URL
+  @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
+    let referenceUrl = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.referenceURL)] as? URL
     if referenceUrl != nil {
       UserDefaults.standard.set(referenceUrl, forKey: "fileAttachment")
       tableView.reloadData()
@@ -212,7 +215,7 @@ class MSCrashesViewController: UITableViewController, UIImagePickerControllerDel
     let classList = objc_copyClassList(&count)
     MSCrash.removeAllCrashes()
     for i in 0..<Int(count){
-      let className: AnyClass = classList![i]!
+      let className: AnyClass = classList![i]
       if class_getSuperclass(className) == MSCrash.self && className != MSCrash.self {
         MSCrash.register((className as! MSCrash.Type).init())
       }
@@ -228,3 +231,13 @@ class MSCrashesViewController: UITableViewController, UIImagePickerControllerDel
   }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
+}

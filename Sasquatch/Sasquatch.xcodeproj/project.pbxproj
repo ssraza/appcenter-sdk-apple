@@ -1693,6 +1693,7 @@
 					5CD700E41EA4B74500FC5D12 = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = 5Z97G9NZQ6;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 84226C7F1E8908C900798417;
 					};
@@ -1718,6 +1719,7 @@
 					84226C7F1E8908C900798417 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 5Z97G9NZQ6;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -1780,6 +1782,7 @@
 					D31EF95F1E9517C600450162 = {
 						CreatedOnToolsVersion = 8.3;
 						DevelopmentTeam = 5Z97G9NZQ6;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -2261,7 +2264,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Scripts/VerifyNoBuildSettings.swift\" ${PROJECT_NAME}.xcodeproj/project.pbxproj\n";
+			shellScript = "
+";
 			showEnvVarsInLog = 0;
 		};
 		F84923BB21119AE100E14DBE /* Verify no buildSettings */ = {
@@ -2336,7 +2340,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Scripts/VerifyNoBuildSettings.swift\" ${PROJECT_NAME}.xcodeproj/project.pbxproj\n";
+			shellScript = "
+";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2731,6 +2736,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = SasquatchUITests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.SasquatchSwiftUITests;
+				SWIFT_VERSION = 4.2;
 				TEST_TARGET_NAME = SasquatchSwift;
 			};
 			name = Debug;
@@ -2741,6 +2747,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = SasquatchUITests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.SasquatchSwiftUITests;
+				SWIFT_VERSION = 4.2;
 				TEST_TARGET_NAME = SasquatchSwift;
 			};
 			name = Release;
@@ -2815,6 +2822,7 @@
 				INFOPLIST_FILE = SasquatchSwift/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.sasquatchswift;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -2828,6 +2836,7 @@
 				INFOPLIST_FILE = SasquatchSwift/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.sasquatchswift;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -2982,6 +2991,7 @@
 				CODE_SIGN_ENTITLEMENTS = "SasquatchWatchSwift Extension.entitlements";
 				INFOPLIST_FILE = "SasquatchWatchSwift Extension/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.sasquatchswift.watchkitapp.watchkitextension;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -2992,6 +3002,7 @@
 				CODE_SIGN_ENTITLEMENTS = "SasquatchWatchSwift Extension.entitlements";
 				INFOPLIST_FILE = "SasquatchWatchSwift Extension/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.sasquatchswift.watchkitapp.watchkitextension;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
