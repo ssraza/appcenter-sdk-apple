@@ -109,6 +109,10 @@ enum StartupMode { APPCENTER, ONECOLLECTOR, BOTH, NONE, SKIP };
     [MSAppCenter setLogUrl:logUrl];
   }
 
+  // WIP
+  NSString *url = @"https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1";
+  [MSDataStore setTokenExchangeUrl:url];
+
   // Start App Center SDK.
   NSArray<Class> *services =
       @ [[MSAnalytics class], [MSCrashes class], [MSDataStore class], [MSDistribute class], [MSIdentity class], [MSPush class]];
@@ -144,6 +148,44 @@ enum StartupMode { APPCENTER, ONECOLLECTOR, BOTH, NONE, SKIP };
   if (userId) {
     [MSAppCenter setUserId:userId];
   }
+
+  // WIP
+  MSDictionaryDocument *doc1 = [[MSDictionaryDocument alloc] initFromDictionary:@{
+    @"key1" : @"Value1",
+    @"key2" : @"Value2",
+  }];
+
+  //  [MSDataStore deleteWithPartition:@"user" documentId:@"doc1" completionHandler:^(MSDocumentWrapper * _Nonnull document) {
+  //    int i = 0;
+  //  }];
+
+  [MSDataStore setEnabled:NO];
+  [MSDataStore setEnabled:YES];
+
+  //  for (int i = 0; i < 10; i++) {
+  //
+  //  [MSDataStore createWithPartition:@"user"
+  //                        documentId:[NSString stringWithFormat:@"doc%d", i]
+  //                          document:doc1
+  //                 completionHandler:^(MSDocumentWrapper *_Nonnull document) {
+  ////                   [MSDataStore deleteWithPartition:@"user"
+  ////                                         documentId:@"doc2"
+  ////                                  completionHandler:^(MSDocumentWrapper *_Nonnull document) {
+  ////                                    int i = 0;
+  ////                                  }];
+  //                 }];
+  //  }
+
+  [MSDataStore listWithPartition:@"user"
+                    documentType:[MSDictionaryDocument class]
+               completionHandler:^(MSPaginatedDocuments *_Nonnull documents) {
+                 int i;
+               }];
+
+  //  [MSDataStore listWithPartition:@"user" documentType:[MSDictionaryDocument class] completionHandler:^(MSPaginatedDocuments * _Nonnull
+  //  documents) {
+  //    MSPaginatedDocuments* doc = documents;
+  //  }];
 
   // Set delegates.
   [self crashes];
