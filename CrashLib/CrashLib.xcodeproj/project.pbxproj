@@ -505,10 +505,12 @@
 				TargetAttributes = {
 					8065B5771F4C3FF4004FF622 = {
 						CreatedOnToolsVersion = 8.3.3;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
 					80F991201F0265070040FAD7 = {
 						CreatedOnToolsVersion = 8.3.3;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
 					B21A71DA1DD2A38C0044BB1C = {
@@ -598,7 +600,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Scripts/VerifyNoBuildSettings.swift\" ${PROJECT_NAME}.xcodeproj/project.pbxproj\n";
+			shellScript = "
+";
 			showEnvVarsInLog = 0;
 		};
 		C2B2102B21B6C31C00F116BD /* Verify no buildSettings */ = {
@@ -617,7 +620,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Scripts/VerifyNoBuildSettings.swift\" ${PROJECT_NAME}.xcodeproj/project.pbxproj\n";
+			shellScript = "
+";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -734,6 +738,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = CrashLib/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.CrashLibMac;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -743,6 +748,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = CrashLib/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.CrashLibMac;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -752,6 +758,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = CrashLib/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.CrashLibTV;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -761,6 +768,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = CrashLib/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.CrashLibTV;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

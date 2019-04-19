@@ -35,9 +35,9 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
   private var runtimePreProperties = [EventProperty]()
   private var child1PreProperties = [EventProperty]()
   private var child2PreProperties = [EventProperty]()
-  dynamic var runtimeProperties = [EventProperty]()
-  dynamic var child1Properties = [EventProperty]()
-  dynamic var child2Properties = [EventProperty]()
+  @objc dynamic var runtimeProperties = [EventProperty]()
+  @objc dynamic var child1Properties = [EventProperty]()
+  @objc dynamic var child2Properties = [EventProperty]()
 
   private class TransmissionTargetSection: NSObject {
     static var defaultTransmissionTargetIsEnabled: Bool?
@@ -92,13 +92,13 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
 
   class EventProperty : NSObject {
     var target: Int = TransmissionTarget.child1.rawValue
-    var key: String = ""
-    var type: String = EventPropertyType.string.rawValue
-    var string: String = ""
-    var double: NSNumber = 0
-    var long: NSNumber = 0
-    var boolean: Bool = false
-    var dateTime: Date = Date.init()
+    @objc var key: String = ""
+    @objc var type: String = EventPropertyType.string.rawValue
+    @objc var string: String = ""
+    @objc var double: NSNumber = 0
+    @objc var long: NSNumber = 0
+    @objc var boolean: Bool = false
+    @objc var dateTime: Date = Date.init()
   }
 
   enum Section : Int {
@@ -213,10 +213,8 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
     
     // Target properties section
     if(tableView.tag == Section.TargetProperties.rawValue) {
-      guard let identifier = tableColumn?.identifier else {
-        return nil
-      }
-      let view = tableView.make(withIdentifier: identifier, owner: nil)
+      let identifier = convertFromNSUserInterfaceItemIdentifier((tableColumn?.identifier)!)
+      let view = tableView.makeView(withIdentifier: convertToNSUserInterfaceItemIdentifier(identifier), owner: nil)
       if (identifier == "value") {
         let eventProperties = arrayController.content as! [EventProperty]
         updateValue(property: eventProperties[row], cell: view as! NSTableCellView)
@@ -228,7 +226,7 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
 
     // Common schema properties section
     if(tableView.tag == Section.CommonSchemaProperties.rawValue) {
-      if let cell = tableView.make(withIdentifier: "property", owner: nil) as? NSTableCellView {
+      if let cell = tableView.makeView(withIdentifier: convertToNSUserInterfaceItemIdentifier("property"), owner: nil) as? NSTableCellView {
         let property = propertyAtRow(row: row)
         switch (row) {
         case kDeviceIdRow:
@@ -236,8 +234,8 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
           key.stringValue = property.key
           let value: NSButton = cell.subviews[cellSubviews.valueCheck.rawValue] as! NSButton
           let selectedTarget = selectedTransmissionTarget(commonSelector)
-          value.state = collectDeviceIdStates[selectedTarget!]! ? 1 : 0
-          value.isEnabled = !((value.state as NSNumber).boolValue)
+          value.state = NSControl.StateValue(rawValue: collectDeviceIdStates[selectedTarget!]! ? 1 : 0)
+          value.isEnabled = !((convertFromNSControlStateValue(value.state) as NSNumber).boolValue)
           value.target = self
           value.action = #selector(collectDeviceIdSwitchCellEnabled)
           cell.subviews[cellSubviews.valueText.rawValue].isHidden = true
@@ -282,14 +280,14 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
     }
 
     // Transmission target section
-    if let cell = tableView.make(withIdentifier: "target", owner: nil) as? NSTableCellView {
+    if let cell = tableView.makeView(withIdentifier: convertToNSUserInterfaceItemIdentifier("target"), owner: nil) as? NSTableCellView {
       let section = transmissionTargetSections![tableView.tag]
       switch (row) {
       case kEnabledCellRowIndex:
         let key: NSTextField = cell.subviews[cellSubviews.key.rawValue] as! NSTextField
         key.stringValue = "Set Enabled"
         let value: NSButton = cell.subviews[cellSubviews.valueCheck.rawValue] as! NSButton
-        value.state = section.isTransmissionTargetEnabled() ? 1 : 0
+        value.state = NSControl.StateValue(rawValue: section.isTransmissionTargetEnabled() ? 1 : 0)
         value.isEnabled = tableView.tag != Section.Default.rawValue
         value.target = self
         value.action = #selector(targetEnabledSwitchValueChanged)
@@ -299,7 +297,7 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
         let key: NSTextField = cell.subviews[cellSubviews.key.rawValue] as! NSTextField
         key.stringValue = "Analytics Events"
         let value: NSButton = cell.subviews[cellSubviews.valueCheck.rawValue] as! NSButton
-        value.state = section.shouldSendAnalytics() ? 1 : 0
+        value.state = NSControl.StateValue(rawValue: section.shouldSendAnalytics() ? 1 : 0)
         value.target = self
         value.action = #selector(targetShouldSendAnalyticsSwitchValueChanged)
         cell.subviews[cellSubviews.valueText.rawValue].isHidden = true
@@ -342,20 +340,20 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
     return transmissionTargetMapping![sender.selectedSegment]
   }
 
-  func onSegmentSelected(_ sender: NSSegmentedControl) {
+  @objc func onSegmentSelected(_ sender: NSSegmentedControl) {
     if(sender == commonSelector) {
       commonTable.reloadData()
     }
     else if(sender == propertySelector) {
       switch propertySelector.selectedSegment {
       case TransmissionTarget.child1.rawValue:
-        arrayController.bind("contentArray", to: self, withKeyPath:"child1Properties", options: nil)
+        arrayController.bind(NSBindingName(rawValue: "contentArray"), to: self, withKeyPath:"child1Properties", options: nil)
         break
       case TransmissionTarget.child2.rawValue:
-        arrayController.bind("contentArray", to: self, withKeyPath:"child2Properties", options: nil)
+        arrayController.bind(NSBindingName(rawValue: "contentArray"), to: self, withKeyPath:"child2Properties", options: nil)
         break
       case TransmissionTarget.runTime.rawValue:
-        arrayController.bind("contentArray", to: self, withKeyPath:"runtimeProperties", options: nil)
+        arrayController.bind(NSBindingName(rawValue: "contentArray"), to: self, withKeyPath:"runtimeProperties", options: nil)
         break
       default:
         break
@@ -364,10 +362,10 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
   }
 
   // Transmission target section
-  func targetEnabledSwitchValueChanged(sender: NSButton!) {
+  @objc func targetEnabledSwitchValueChanged(sender: NSButton!) {
     let sectionIndex = getCellSection(forView: sender)
     let section = transmissionTargetSections![sectionIndex]
-    let state = (sender!.state as NSNumber).boolValue
+    let state = (convertFromNSControlStateValue(sender!.state) as NSNumber).boolValue
     section.setTransmissionTargetEnabled(state)
     if (sectionIndex == Section.Default.rawValue) {
       section.setTransmissionTargetEnabled(state)
@@ -384,37 +382,37 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
         }
         let childSwitch: NSButton? = childCell.subviews[cellSubviews.valueCheck.rawValue] as? NSButton
         let childTarget = transmissionTargetSections![childSectionIndex].getTransmissionTarget()
-        childSwitch!.state = (childTarget?.isEnabled())! ? 1 : 0
+        childSwitch!.state = NSControl.StateValue(rawValue: (childTarget?.isEnabled())! ? 1 : 0)
         childSwitch!.isEnabled = state
       }
     }
     else if sectionIndex == Section.Child1.rawValue || sectionIndex == Section.Child2.rawValue {
-      let switchEnabled = (sender!.state as NSNumber).boolValue
+      let switchEnabled = (convertFromNSControlStateValue(sender!.state) as NSNumber).boolValue
       section.setTransmissionTargetEnabled(switchEnabled)
       if switchEnabled && !section.isTransmissionTargetEnabled() {
   
         // Switch tried to enable the transmission target but it didn't work.
-        sender!.state = 0
+        sender!.state = convertToNSControlStateValue(0)
         section.setTransmissionTargetEnabled(false)
         sender!.isEnabled = false
       }
     }
   }
 
-  func targetShouldSendAnalyticsSwitchValueChanged(sender: NSButton!) {
+  @objc func targetShouldSendAnalyticsSwitchValueChanged(sender: NSButton!) {
     let sectionIndex = getCellSection(forView: sender)
     let section = transmissionTargetSections![sectionIndex]
-    let state = (sender!.state as NSNumber).boolValue
+    let state = (convertFromNSControlStateValue(sender!.state) as NSNumber).boolValue
     section.setShouldSendAnalytics(enabledState: state)
   }
 
-  func pause(_ sender: NSButton) {
+  @objc func pause(_ sender: NSButton) {
     let sectionIndex = getCellSection(forView: sender)
     let section = transmissionTargetSections![sectionIndex]
     section.pause()
   }
 
-  func resume(_ sender: NSButton) {
+  @objc func resume(_ sender: NSButton) {
     let sectionIndex = getCellSection(forView: sender)
     let section = transmissionTargetSections![sectionIndex]
     section.resume()
@@ -433,7 +431,7 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
     collectDeviceIdStates[selectedTarget!] = true
   }
 
-  override func controlTextDidChange(_ obj: Notification) {
+  func controlTextDidChange(_ obj: Notification) {
     let text = obj.object as? NSTextField
     let tag = getCellSection(forView: text!)
     if(tag == Section.CommonSchemaProperties.rawValue) {
@@ -587,7 +585,7 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
       return
     }
     if(keyPath == #keyPath(EventProperty.type)) {
-      let column = propertiesTable?.column(withIdentifier: "value")
+      let column = propertiesTable?.column(withIdentifier: convertToNSUserInterfaceItemIdentifier("value"))
       guard let cell = propertiesTable?.view(atColumn: column!, row: row, makeIfNecessary: false) as? NSTableCellView else {
         return
       }
@@ -640,4 +638,24 @@ class TransmissionViewController: NSViewController, NSTableViewDataSource, NSTab
       target.propertyConfigurator.setEventProperty(property.dateTime , forKey: property.key)
     }
   }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSUserInterfaceItemIdentifier(_ input: NSUserInterfaceItemIdentifier) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSUserInterfaceItemIdentifier(_ input: String) -> NSUserInterfaceItemIdentifier {
+	return NSUserInterfaceItemIdentifier(rawValue: input)
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSControlStateValue(_ input: NSControl.StateValue) -> Int {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSControlStateValue(_ input: Int) -> NSControl.StateValue {
+	return NSControl.StateValue(rawValue: input)
 }

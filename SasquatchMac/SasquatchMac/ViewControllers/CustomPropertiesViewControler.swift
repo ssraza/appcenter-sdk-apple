@@ -18,7 +18,7 @@ class CustomPropertiesViewControler: NSViewController, NSTableViewDelegate {
   
   class CustomProperty : NSObject {
     var key: String = ""
-    var type: String = CustomPropertyType.Clear.rawValue
+    @objc var type: String = CustomPropertyType.Clear.rawValue
     var string: String = ""
     var number: NSNumber = 0
     var boolean: Bool = false
@@ -29,7 +29,7 @@ class CustomPropertiesViewControler: NSViewController, NSTableViewDelegate {
   
   @IBOutlet var arrayController: NSArrayController!
   @IBOutlet weak var tableView: NSTableView!
-  dynamic var properties = [CustomProperty]()
+  @objc dynamic var properties = [CustomProperty]()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -73,10 +73,8 @@ class CustomPropertiesViewControler: NSViewController, NSTableViewDelegate {
   }
   
   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-    guard let identifier = tableColumn?.identifier else {
-      return nil
-    }
-    let view = tableView.make(withIdentifier: identifier, owner: self)
+    let identifier = convertFromNSUserInterfaceItemIdentifier((tableColumn?.identifier)!)
+    let view = tableView.makeView(withIdentifier: convertToNSUserInterfaceItemIdentifier(identifier), owner: self)
     if (identifier == "value") {
       updateValue(property: properties[row], cell: view as! NSTableCellView)
     }
@@ -90,7 +88,7 @@ class CustomPropertiesViewControler: NSViewController, NSTableViewDelegate {
     guard let row = properties.index(of: property) else {
       return
     }
-    let column = tableView.column(withIdentifier: "value")
+    let column = tableView.column(withIdentifier: convertToNSUserInterfaceItemIdentifier("value"))
     guard let cell = tableView.view(atColumn: column, row: row, makeIfNecessary: false) as? NSTableCellView else {
       return
     }
@@ -111,4 +109,14 @@ class CustomPropertiesViewControler: NSViewController, NSTableViewDelegate {
       cell.isHidden = true
     }
   }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSUserInterfaceItemIdentifier(_ input: NSUserInterfaceItemIdentifier) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSUserInterfaceItemIdentifier(_ input: String) -> NSUserInterfaceItemIdentifier {
+	return NSUserInterfaceItemIdentifier(rawValue: input)
 }

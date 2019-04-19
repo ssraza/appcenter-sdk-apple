@@ -594,6 +594,7 @@
 					D322EFD71E8E97C800A8EDA5 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 5Z97G9NZQ6;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
 					};
 					D322EFEA1E8E97DF00A8EDA5 = {
@@ -723,7 +724,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Scripts/VerifyNoBuildSettings.swift\" ${PROJECT_NAME}.xcodeproj/project.pbxproj";
+			shellScript = "
+";
 			showEnvVarsInLog = 0;
 		};
 		F84BA0BD21133F5B0020F13B /* Verify no buildSettings */ = {
@@ -985,6 +987,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.sasquatchswift.tv;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -997,6 +1000,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.sasquatchswift.tv;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
