@@ -27,7 +27,11 @@ typedef void (^MSGetTokenAsyncCompletionHandler)(MSTokensResponse *tokensRespons
  * @param appSecret The application secret.
  * @param partition The CosmosDB partition.
  * @param includeExpiredToken The flag that indicates whether the method returns expired token from the cache or not.
+<<<<<<< HEAD
  * @param msreachability Msreachability instance used for check if connected network or not.
+=======
+ * @param reachability The reachability is used to check if the network is on or off.
+>>>>>>> 19a6011041aeaf0f40f6741785bd4b20d3256920
  * @param completionHandler Callback that gets invoked when a token is retrieved.
  */
 + (void)performDbTokenAsyncOperationWithHttpClient:(id<MSHttpClientProtocol>)httpClient
@@ -35,7 +39,11 @@ typedef void (^MSGetTokenAsyncCompletionHandler)(MSTokensResponse *tokensRespons
                                          appSecret:(NSString *)appSecret
                                          partition:(NSString *)partition
                                includeExpiredToken:(BOOL)includeExpiredToken
+<<<<<<< HEAD
                                     msreachability:(MS_Reachability *)msreachability
+=======
+                                      reachability:(MS_Reachability *)reachability
+>>>>>>> 19a6011041aeaf0f40f6741785bd4b20d3256920
                                  completionHandler:(MSGetTokenAsyncCompletionHandler)completionHandler;
 
 /**

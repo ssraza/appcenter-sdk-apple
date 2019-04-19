@@ -17,7 +17,6 @@
 #import "MSDocumentWrapperInternal.h"
 #import "MSHttpClient.h"
 #import "MSHttpTestUtil.h"
-#import "MSMockDocument.h"
 #import "MSMockUserDefaults.h"
 #import "MSPaginatedDocuments.h"
 #import "MSServiceAbstract.h"
@@ -26,26 +25,9 @@
 #import "MSTokenExchange.h"
 #import "MSTokenResult.h"
 #import "MSTokensResponse.h"
+#import "MS_Reachability.h"
 #import "NSObject+MSTestFixture.h"
 #import "MS_Reachability.h"
-
-@interface MSFakeSerializableDocument : NSObject <MSSerializableDocument>
-- (instancetype)initFromDictionary:(NSDictionary *)dictionary;
-- (NSDictionary *)serializeToDictionary;
-@end
-
-@implementation MSFakeSerializableDocument
-
-- (NSDictionary *)serializeToDictionary {
-  return [NSDictionary new];
-}
-
-- (instancetype)initFromDictionary:(NSDictionary *)__unused dictionary {
-  (self = [super init]);
-  return self;
-}
-
-@end
 
 @interface MSDataStoreTests : XCTestCase
 
@@ -160,7 +142,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
   [self.sut setEnabled:NO];
   [MSDataStore readWithPartition:kMSPartitionTest
                       documentId:kMSDocumentIdTest
-                    documentType:[MSFakeSerializableDocument class]
+                    documentType:[MSDictionaryDocument class]
                completionHandler:^(MSDocumentWrapper *data) {
                  actualDocumentWrapper = data;
                  [expectation fulfill];
@@ -223,7 +205,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
   [self.sut setEnabled:NO];
   [MSDataStore createWithPartition:kMSPartitionTest
                         documentId:kMSDocumentIdTest
-                          document:[MSFakeSerializableDocument new]
+                          document:[[MSDictionaryDocument alloc] initFromDictionary:@{}]
                  completionHandler:^(MSDocumentWrapper *data) {
                    actualDocumentWrapper = data;
                    [expectation fulfill];
@@ -247,7 +229,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
 
   // If
   XCTestExpectation *expectation = [self expectationWithDescription:@"Replace with partition completed"];
-  id<MSSerializableDocument> mockSerializableDocument = [MSFakeSerializableDocument new];
+  id<MSSerializableDocument> mockSerializableDocument = [[MSDictionaryDocument alloc] initFromDictionary:@{}];
   __block BOOL completionHandlerCalled = NO;
   __block MSDocumentWrapper *actualDocumentWrapper;
   MSTokenResult *testToken = [self mockTokenFetchingWithError:nil];
@@ -277,7 +259,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
                    actualDocumentWrapper = data;
                    [expectation fulfill];
                  }];
-  id<MSSerializableDocument> replaceMockSerializableDocument = [MSFakeSerializableDocument new];
+  id<MSSerializableDocument> replaceMockSerializableDocument = [[MSDictionaryDocument alloc] initFromDictionary:@{}];
   [MSDataStore replaceWithPartition:kMSPartitionTest
                          documentId:kMSDocumentIdTest
                            document:replaceMockSerializableDocument
@@ -312,7 +294,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
   [self.sut setEnabled:NO];
   [MSDataStore replaceWithPartition:kMSPartitionTest
                          documentId:kMSDocumentIdTest
-                           document:[MSFakeSerializableDocument new]
+                           document:[[MSDictionaryDocument alloc] initFromDictionary:@{}]
                   completionHandler:^(MSDocumentWrapper *data) {
                     actualDocumentWrapper = data;
                     [expectation fulfill];
@@ -374,7 +356,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
   // When
   [self.sut setEnabled:NO];
   [MSDataStore listWithPartition:kMSPartitionTest
-                    documentType:[MSFakeSerializableDocument class]
+                    documentType:[MSDictionaryDocument class]
                completionHandler:^(MSPaginatedDocuments *documents) {
                  actualPaginatedDocuments = documents;
                  [expectation fulfill];
@@ -616,7 +598,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
   additionalHeaders[@"Foo"] = @"Bar";
   NSDictionary *dic = @{@"abv" : @1, @"foo" : @"bar"};
 
-  MSMockDocument *mockDoc = [[MSMockDocument alloc] initFromDictionary:dic];
+  MSDictionaryDocument *mockDoc = [[MSDictionaryDocument alloc] initFromDictionary:dic];
   __block NSData *data = [NSJSONSerialization dataWithJSONObject:dic options:0 error:nil];
 
   // When
@@ -663,7 +645,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
         completionHandler(actualData, nil, nil);
       });
   NSDictionary *dic = @{@"abv" : @1, @"foo" : @"bar"};
-  MSMockDocument *mockDoc = [[MSMockDocument alloc] initFromDictionary:dic];
+  MSDictionaryDocument *mockDoc = [[MSDictionaryDocument alloc] initFromDictionary:dic];
   __block NSData *data = [NSJSONSerialization dataWithJSONObject:dic options:0 error:nil];
 
   // When
@@ -712,7 +694,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
         [invocation getArgument:&completionHandler atIndex:6];
         completionHandler(actualData, nil, nil);
       });
-  MSMockDocument *mockDoc = nil;
+  MSDictionaryDocument *mockDoc = nil;
 
   // When
   [MSCosmosDb performCosmosDbAsyncOperationWithHttpClient:httpClient
@@ -755,7 +737,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
       });
   NSDictionary *dic = @{@"foo" : @"bar"};
   __block NSData *data = [NSJSONSerialization dataWithJSONObject:dic options:0 error:nil];
-  MSMockDocument *mockDoc = [[MSMockDocument alloc] initFromDictionary:dic];
+  MSDictionaryDocument *mockDoc = [[MSDictionaryDocument alloc] initFromDictionary:dic];
 
   // When
   [MSCosmosDb performCosmosDbAsyncOperationWithHttpClient:httpClient
@@ -804,7 +786,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
         completionHandler(actualData, nil, nil);
       });
   NSDictionary *dic = @{@"foo" : @"bar"};
-  MSMockDocument *mockDoc = [[MSMockDocument alloc] initFromDictionary:dic];
+  MSDictionaryDocument *mockDoc = [[MSDictionaryDocument alloc] initFromDictionary:dic];
 
   // When
   [MSCosmosDb performCosmosDbAsyncOperationWithHttpClient:httpClient
@@ -826,7 +808,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
 
   // If
   XCTestExpectation *expectation = [self expectationWithDescription:@"Create with partition completed"];
-  id<MSSerializableDocument> mockSerializableDocument = [MSFakeSerializableDocument new];
+  id<MSSerializableDocument> mockSerializableDocument = [[MSDictionaryDocument alloc] initFromDictionary:@{}];
   __block BOOL completionHandlerCalled = NO;
   __block MSDocumentWrapper *actualDocumentWrapper;
   MSTokenResult *testToken = [self mockTokenFetchingWithError:nil];
@@ -874,7 +856,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
 
   // If
   XCTestExpectation *expectation = [self expectationWithDescription:@"Create with partition completed"];
-  id<MSSerializableDocument> mockSerializableDocument = [MSFakeSerializableDocument new];
+  id<MSSerializableDocument> mockSerializableDocument = [[MSDictionaryDocument alloc] initFromDictionary:@{}];
   __block BOOL completionHandlerCalled = NO;
   NSError *expectedTokenExchangeError = [NSError errorWithDomain:kMSACErrorDomain code:0 userInfo:@{kMSCosmosDbHttpCodeKey : @(0)}];
   __block MSDataSourceError *actualError;
@@ -906,7 +888,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
 
   // If
   XCTestExpectation *expectation = [self expectationWithDescription:@"Create with partition completed"];
-  id<MSSerializableDocument> mockSerializableDocument = [MSFakeSerializableDocument new];
+  id<MSSerializableDocument> mockSerializableDocument = [[MSDictionaryDocument alloc] initFromDictionary:@{}];
   __block BOOL completionHandlerCalled = NO;
   NSInteger expectedResponseCode = MSHTTPCodesNo500InternalServerError;
   NSError *expectedCosmosDbError = [NSError errorWithDomain:kMSACErrorDomain
@@ -960,7 +942,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
 
   // If
   XCTestExpectation *expectation = [self expectationWithDescription:@"Create with partition completed"];
-  id<MSSerializableDocument> mockSerializableDocument = [MSFakeSerializableDocument new];
+  id<MSSerializableDocument> mockSerializableDocument = [[MSDictionaryDocument alloc] initFromDictionary:@{}];
   __block BOOL completionHandlerCalled = NO;
   NSErrorDomain expectedErrorDomain = NSCocoaErrorDomain;
   NSInteger expectedErrorCode = 3840;
@@ -1141,7 +1123,11 @@ static NSString *const kMSDocumentIdTest = @"documentId";
                                                                    appSecret:OCMOCK_ANY
                                                                    partition:OCMOCK_ANY
                                                          includeExpiredToken:YES
+<<<<<<< HEAD
                                                               msreachability:OCMOCK_ANY
+=======
+                                                                reachability:OCMOCK_ANY
+>>>>>>> 19a6011041aeaf0f40f6741785bd4b20d3256920
                                                            completionHandler:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
         [invocation getArgument:&actualUrl atIndex:3];
@@ -1401,11 +1387,15 @@ static NSString *const kMSDocumentIdTest = @"documentId";
                                                                    appSecret:OCMOCK_ANY
                                                                    partition:kMSPartitionTest
                                                          includeExpiredToken:YES
+<<<<<<< HEAD
                                                               msreachability:reachabilityMock
+=======
+                                                                reachability:OCMOCK_ANY
+>>>>>>> 19a6011041aeaf0f40f6741785bd4b20d3256920
                                                            completionHandler:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
         MSGetTokenAsyncCompletionHandler getTokenCallback;
-        [invocation getArgument:&getTokenCallback atIndex:7];
+        [invocation getArgument:&getTokenCallback atIndex:8];
         getTokenCallback(testTokensResponse, nil);
       });
 
@@ -1593,7 +1583,8 @@ static NSString *const kMSDocumentIdTest = @"documentId";
         cosmosdbOperationCallback(testCosmosDbResponse, [self generateResponseWithStatusCode:MSHTTPCodesNo200OK], nil);
       });
   MSDocumentWrapper *expectedDocumentWrapper = [MSDocumentUtils documentWrapperFromData:testCosmosDbResponse
-                                                                           documentType:[MSDictionaryDocument class]];
+                                                                           documentType:[MSDictionaryDocument class]
+                                                                        fromDeviceCache:NO];
 
   // When
   [MSDataStore readWithPartition:kMSPartitionTest
@@ -1605,6 +1596,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
                  XCTAssertEqualObjects(expectedDocumentWrapper.eTag, document.eTag);
                  XCTAssertEqualObjects(expectedDocumentWrapper.partition, document.partition);
                  XCTAssertEqualObjects(expectedDocumentWrapper.documentId, document.documentId);
+                 XCTAssertEqual(expectedDocumentWrapper.fromDeviceCache, document.fromDeviceCache);
                  MSDictionaryDocument *expectedDictionaryDocument = (MSDictionaryDocument *)expectedDocumentWrapper.deserializedValue;
                  MSDictionaryDocument *actualDictionaryDocument = (MSDictionaryDocument *)document.deserializedValue;
                  XCTAssertEqualObjects(expectedDictionaryDocument.dictionary, actualDictionaryDocument.dictionary);
@@ -1635,10 +1627,12 @@ static NSString *const kMSDocumentIdTest = @"documentId";
   self.sut.dataOperationProxy.documentStore = localStorageMock;
   NSData *jsonFixture = [self jsonFixture:@"validTestDocument"];
   MSDocumentWrapper *expectedDocumentWrapper = [MSDocumentUtils documentWrapperFromData:jsonFixture
-                                                                           documentType:[MSDictionaryDocument class]];
+                                                                           documentType:[MSDictionaryDocument class]
+                                                                        fromDeviceCache:NO];
 
   MSDocumentWrapper *localDocumentWrapper = OCMPartialMock([MSDocumentUtils documentWrapperFromData:jsonFixture
-                                                                                       documentType:[MSDictionaryDocument class]]);
+                                                                                       documentType:[MSDictionaryDocument class]
+                                                                                    fromDeviceCache:YES]);
 
   OCMStub(localDocumentWrapper.eTag).andReturn(@"some other etag");
   OCMStub([localStorageMock readWithToken:tokenResult documentId:OCMOCK_ANY documentType:OCMOCK_ANY]).andReturn(localDocumentWrapper);
@@ -1666,6 +1660,7 @@ static NSString *const kMSDocumentIdTest = @"documentId";
                  // Then
                  XCTAssertNil(document.error);
                  XCTAssertEqualObjects(expectedDocumentWrapper.eTag, document.eTag);
+                 XCTAssertFalse(document.fromDeviceCache);
                  [expectation fulfill];
                }];
 
@@ -1736,12 +1731,16 @@ static NSString *const kMSDocumentIdTest = @"documentId";
                                                                    appSecret:OCMOCK_ANY
                                                                    partition:kMSPartitionTest
                                                          includeExpiredToken:NO
+<<<<<<< HEAD
                                                               msreachability:reachabilityMock
+=======
+                                                                reachability:OCMOCK_ANY
+>>>>>>> 19a6011041aeaf0f40f6741785bd4b20d3256920
                                                            completionHandler:OCMOCK_ANY])
 
       .andDo(^(NSInvocation *invocation) {
         MSGetTokenAsyncCompletionHandler getTokenCallback;
-        [invocation getArgument:&getTokenCallback atIndex:7];
+        [invocation getArgument:&getTokenCallback atIndex:8];
         getTokenCallback(error ? nil : testTokensResponse, error);
       });
   OCMStub([self.tokenExchangeMock performDbTokenAsyncOperationWithHttpClient:OCMOCK_ANY
@@ -1749,11 +1748,15 @@ static NSString *const kMSDocumentIdTest = @"documentId";
                                                                    appSecret:OCMOCK_ANY
                                                                    partition:kMSPartitionTest
                                                          includeExpiredToken:YES
+<<<<<<< HEAD
                                                               msreachability:reachabilityMock
+=======
+                                                                reachability:OCMOCK_ANY
+>>>>>>> 19a6011041aeaf0f40f6741785bd4b20d3256920
                                                            completionHandler:OCMOCK_ANY])
       .andDo(^(NSInvocation *invocation) {
         MSGetTokenAsyncCompletionHandler getTokenCallback;
-        [invocation getArgument:&getTokenCallback atIndex:7];
+        [invocation getArgument:&getTokenCallback atIndex:8];
         getTokenCallback(error ? nil : testTokensResponse, error);
       });
   return testToken;
