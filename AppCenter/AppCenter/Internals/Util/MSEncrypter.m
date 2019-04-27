@@ -45,19 +45,33 @@ static NSString *kMSEncryptionKeyTag = @"kMSEncryptionKeyTag";
   if (!key) {
     key = [MSEncrypter generateKeyWithTag:keyTag];
   }
+    
+  
 
   // Set a key to the property.
   self.key = key;
+  
+  // Generate the IV
+  int ivLength = kCCBlockSizeAES128;
+  NSMutableData *ivData = [NSMutableData dataWithLength:kCCBlockSizeAES128];
+  int status = SecRandomCopyBytes(kSecRandomDefault, ivLength, ivData.mutableBytes);
+  
+  // Log if it failed to set IV
+  if (status != errSecSuccess) {
+    MSLogError([MSAppCenter logTag], @"Could not create IV.");
+    self.cryptorCreated = NO;
+    return;
+  }
 
   // Create Cryptorgraphics context for encryption.
   CCCryptorRef encObj;
   CCCryptorStatus encStatus =
-      CCCryptorCreate(kCCEncrypt, kMSEncryptionAlgorithm, kCCOptionPKCS7Padding, [self.key bytes], kMSCipherKeySize, NULL, &encObj);
+      CCCryptorCreate(kCCEncrypt, kMSEncryptionAlgorithm, kCCOptionPKCS7Padding, [self.key bytes], kMSCipherKeySize, ivData.bytes, &encObj);
 
   // Create Cryptorgraphics context for descryption.
   CCCryptorRef decObj;
   CCCryptorStatus decStatus =
-      CCCryptorCreate(kCCDecrypt, kMSEncryptionAlgorithm, kCCOptionPKCS7Padding, [self.key bytes], kMSCipherKeySize, NULL, &decObj);
+      CCCryptorCreate(kCCDecrypt, kMSEncryptionAlgorithm, kCCOptionPKCS7Padding, [self.key bytes], kMSCipherKeySize, ivData.bytes, &decObj);
 
   // Log if it failed to create cryptorgraphics contexts.
   if (encStatus != kCCSuccess || decStatus != kCCSuccess) {
