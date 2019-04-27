@@ -45,9 +45,7 @@ static NSString *kMSEncryptionKeyTag = @"kMSEncryptionKeyTag";
   if (!key) {
     key = [MSEncrypter generateKeyWithTag:keyTag];
   }
-    
   
-
   // Set a key to the property.
   self.key = key;
   
