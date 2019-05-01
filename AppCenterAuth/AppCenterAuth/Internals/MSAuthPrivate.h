@@ -65,6 +65,16 @@ typedef void (^MSAcquireTokenCompletionHandler)(MSUserInformation *_Nullable use
 @property(nonatomic, nullable, copy) NSString *homeAccountIdToRefresh;
 
 /**
+ * Indicates that there is a pending configuration download
+ * and sign in, if called, should wait until configuration is downloaded.
+ */
+@property(atomic) BOOL signInShouldWaitForConfig;
+
+@property(atomic) BOOL configDownloadFailed;
+
+@property(atomic, nullable) MSSignInCompletionHandler userSignInCompletionHandler;
+
+/**
  * Rest singleton instance.
  */
 + (void)resetSharedInstance;

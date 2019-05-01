@@ -184,6 +184,17 @@ static dispatch_once_t onceToken;
                         message:@"User sign-in failed. Internet connection is down."];
     return;
   }
+  if (!self.authConfig) {
+    if (self.configDownloadFailed) {
+      [self callCompletionHandler:completionHandler
+                    withErrorCode:MSACAuthErrorSignInBackgroundOrNotConfigured
+                          message:@"Failed to download configuration."];
+    } else {
+      self.signInShouldWaitForConfig = YES;
+      self.userSignInCompletionHandler = completionHandler;
+    }
+    return;
+  }
   if (self.clientApplication == nil || self.authConfig == nil) {
     [self callCompletionHandler:completionHandler
                   withErrorCode:MSACAuthErrorSignInBackgroundOrNotConfigured
@@ -230,6 +241,7 @@ static dispatch_once_t onceToken;
   [self callCompletionHandler:self.signInCompletionHandler withErrorCode:errorCode message:message];
   [self callCompletionHandler:self.refreshCompletionHandler withErrorCode:errorCode message:message];
   self.homeAccountIdToRefresh = nil;
+  self.signInShouldWaitForConfig = NO;
 }
 
 - (void)signOut {
@@ -302,15 +314,25 @@ static dispatch_once_t onceToken;
                 }
                 @synchronized(self) {
                   self.authConfig = config;
+                  self.configDownloadFailed = NO;
 
                   // Reinitialize client application.
                   [self configAuthenticationClient];
                 }
               } else {
                 MSLogError([MSAuth logTag], @"Downloaded auth config is not valid.");
+                self.configDownloadFailed = YES;
               }
             } else {
               MSLogError([MSAuth logTag], @"Failed to download auth config. Status code received: %ld", (long)response.statusCode);
+              self.configDownloadFailed = YES;
+            }
+
+            if (self.signInShouldWaitForConfig) {
+              MSSignInCompletionHandler userSignInCompletionHandler = self.userSignInCompletionHandler;
+              self.signInCompletionHandler = nil;
+              self.signInShouldWaitForConfig = NO;
+              [self signInWithCompletionHandler:userSignInCompletionHandler];
             }
           }];
 }
