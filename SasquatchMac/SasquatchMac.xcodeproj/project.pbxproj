@@ -23,6 +23,13 @@
 		353332F820126200009B0946 /* EventFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353332F620126200009B0946 /* EventFilterViewController.swift */; };
 		358F9BCC2019639100B9E22C /* MSEventFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 358F9BCA2019639100B9E22C /* MSEventFilter.m */; };
 		358F9BCD2019639100B9E22C /* MSEventFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 358F9BCA2019639100B9E22C /* MSEventFilter.m */; };
+		38AE57FA2304CFB300F775AA /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38AE57F92304CFB300F775AA /* NotificationCenter.framework */; };
+		38AE57FD2304CFB300F775AA /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AE57FC2304CFB300F775AA /* TodayViewController.swift */; };
+		38AE58042304CFB300F775AA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38AE58022304CFB300F775AA /* InfoPlist.strings */; };
+		38AE58082304CFB300F775AA /* SasquatchMacSwift Today Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 38AE57F82304CFB300F775AA /* SasquatchMacSwift Today Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		38AE580D2304D02800F775AA /* AppCenterCrashes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 042319CC1EAAD720008FACA0 /* AppCenterCrashes.framework */; };
+		38AE580E2304D02800F775AA /* AppCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04ED31D41EAAC7510033BAAE /* AppCenter.framework */; };
+		38AE58282304D7D200F775AA /* TodayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38AE58262304D7D200F775AA /* TodayViewController.xib */; };
 		4A0A7081220449C7007565A6 /* TransmissionTargets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0A7080220449C7007565A6 /* TransmissionTargets.swift */; };
 		4A0A7082220449C7007565A6 /* TransmissionTargets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0A7080220449C7007565A6 /* TransmissionTargets.swift */; };
 		4A0A7083220449C7007565A6 /* TransmissionTargets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0A7080220449C7007565A6 /* TransmissionTargets.swift */; };
@@ -99,7 +106,28 @@
 		F8B8EC741FD853E800445BD4 /* CustomPropertiesViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B8EC721FD853E800445BD4 /* CustomPropertiesViewControler.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		38AE58062304CFB300F775AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D3C31C041E8E757300B288CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 38AE57F72304CFB300F775AA;
+			remoteInfo = "SasquatchMacSwift Today Extension";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		38AE580C2304CFB300F775AA /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				38AE58082304CFB300F775AA /* SasquatchMacSwift Today Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8065B5B61F4C40FC004FF622 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -160,6 +188,14 @@
 		353332F620126200009B0946 /* EventFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFilterViewController.swift; sourceTree = "<group>"; };
 		358F9BCA2019639100B9E22C /* MSEventFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSEventFilter.m; sourceTree = "<group>"; };
 		358F9BCB2019639100B9E22C /* MSEventFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSEventFilter.h; sourceTree = "<group>"; };
+		38AE57F82304CFB300F775AA /* SasquatchMacSwift Today Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "SasquatchMacSwift Today Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		38AE57F92304CFB300F775AA /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		38AE57FC2304CFB300F775AA /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		38AE58012304CFB300F775AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		38AE58032304CFB300F775AA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		38AE58052304CFB300F775AA /* SasquatchMacSwift_Today_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SasquatchMacSwift_Today_Extension.entitlements; sourceTree = "<group>"; };
+		38AE58272304D7D200F775AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TodayViewController.xib; sourceTree = "<group>"; };
+		38AE58292304DBB800F775AA /* SasquatchMacSwift Today Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SasquatchMacSwift Today Extension.entitlements"; sourceTree = "<group>"; };
 		4A0A7080220449C7007565A6 /* TransmissionTargets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransmissionTargets.swift; sourceTree = "<group>"; };
 		4A0A708522044A37007565A6 /* TransmissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransmissionViewController.swift; sourceTree = "<group>"; };
 		4A3147512206896100B0FC8A /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
@@ -191,6 +227,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		38AE57F52304CFB300F775AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38AE57FA2304CFB300F775AA /* NotificationCenter.framework in Frameworks */,
+				38AE580D2304D02800F775AA /* AppCenterCrashes.framework in Frameworks */,
+				38AE580E2304D02800F775AA /* AppCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B2A4CFC6210A716E00199B4F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -251,6 +297,19 @@
 			path = EventFilter;
 			sourceTree = "<group>";
 		};
+		38AE57FB2304CFB300F775AA /* SasquatchMacSwift Today Extension */ = {
+			isa = PBXGroup;
+			children = (
+				38AE58292304DBB800F775AA /* SasquatchMacSwift Today Extension.entitlements */,
+				38AE58262304D7D200F775AA /* TodayViewController.xib */,
+				38AE57FC2304CFB300F775AA /* TodayViewController.swift */,
+				38AE58012304CFB300F775AA /* Info.plist */,
+				38AE58022304CFB300F775AA /* InfoPlist.strings */,
+				38AE58052304CFB300F775AA /* SasquatchMacSwift_Today_Extension.entitlements */,
+			);
+			path = "SasquatchMacSwift Today Extension";
+			sourceTree = "<group>";
+		};
 		D3C31C031E8E757300B288CE = {
 			isa = PBXGroup;
 			children = (
@@ -258,6 +317,7 @@
 				D3C31C0E1E8E757300B288CE /* SasquatchMac */,
 				D3C31C231E8E75B300B288CE /* SasquatchMacObjC */,
 				D3C31C611E8E763600B288CE /* SasquatchMacSwift */,
+				38AE57FB2304CFB300F775AA /* SasquatchMacSwift Today Extension */,
 				D3C31C0D1E8E757300B288CE /* Products */,
 				D3C31C731E8E782900B288CE /* Frameworks */,
 			);
@@ -270,6 +330,7 @@
 				D3C31C601E8E763600B288CE /* SasquatchMacSwift.app */,
 				B2A4CFD4210A716E00199B4F /* SasquatchMacObjC-Preview.app */,
 				B2A4CFF1210A77D400199B4F /* SasquatchMacSwift-Preview.app */,
+				38AE57F82304CFB300F775AA /* SasquatchMacSwift Today Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -372,6 +433,7 @@
 				042319CC1EAAD720008FACA0 /* AppCenterCrashes.framework */,
 				04ED31D31EAAC7510033BAAE /* AppCenterAnalytics.framework */,
 				04ED31D41EAAC7510033BAAE /* AppCenter.framework */,
+				38AE57F92304CFB300F775AA /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -388,6 +450,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		38AE57F72304CFB300F775AA /* SasquatchMacSwift Today Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 38AE580B2304CFB300F775AA /* Build configuration list for PBXNativeTarget "SasquatchMacSwift Today Extension" */;
+			buildPhases = (
+				38AE57F42304CFB300F775AA /* Sources */,
+				38AE57F52304CFB300F775AA /* Frameworks */,
+				38AE57F62304CFB300F775AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SasquatchMacSwift Today Extension";
+			productName = "SasquatchMacSwift Today Extension";
+			productReference = 38AE57F82304CFB300F775AA /* SasquatchMacSwift Today Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		B2A4CFB8210A716E00199B4F /* SasquatchMacObjC-Preview */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2A4CFD1210A716E00199B4F /* Build configuration list for PBXNativeTarget "SasquatchMacObjC-Preview" */;
@@ -454,10 +533,12 @@
 				D3C31C5D1E8E763600B288CE /* Frameworks */,
 				D3C31C5E1E8E763600B288CE /* Resources */,
 				8065B5B91F4C4121004FF622 /* Embed Frameworks */,
+				38AE580C2304CFB300F775AA /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				38AE58072304CFB300F775AA /* PBXTargetDependency */,
 			);
 			name = SasquatchMacSwift;
 			productName = SasquatchMacSwift;
@@ -470,10 +551,20 @@
 		D3C31C041E8E757300B288CE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0820;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
+					38AE57F72304CFB300F775AA = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = KYJ84ZC369;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
 					B2A4CFB8210A716E00199B4F = {
 						DevelopmentTeam = KYJ84ZC369;
 						ProvisioningStyle = Manual;
@@ -521,11 +612,21 @@
 				B2A4CFB8210A716E00199B4F /* SasquatchMacObjC-Preview */,
 				D3C31C5F1E8E763600B288CE /* SasquatchMacSwift */,
 				B2A4CFD6210A77D400199B4F /* SasquatchMacSwift-Preview */,
+				38AE57F72304CFB300F775AA /* SasquatchMacSwift Today Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		38AE57F62304CFB300F775AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38AE58282304D7D200F775AA /* TodayViewController.xib in Resources */,
+				38AE58042304CFB300F775AA /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B2A4CFCC210A716E00199B4F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -628,6 +729,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		38AE57F42304CFB300F775AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38AE57FD2304CFB300F775AA /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B2A4CFB9210A716E00199B4F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -716,7 +825,31 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		38AE58072304CFB300F775AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 38AE57F72304CFB300F775AA /* SasquatchMacSwift Today Extension */;
+			targetProxy = 38AE58062304CFB300F775AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		38AE58022304CFB300F775AA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				38AE58032304CFB300F775AA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		38AE58262304D7D200F775AA /* TodayViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				38AE58272304D7D200F775AA /* Base */,
+			);
+			name = TodayViewController.xib;
+			sourceTree = "<group>";
+		};
 		D3C31C151E8E757300B288CE /* SasquatchMac.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -728,6 +861,138 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		38AE58092304CFB300F775AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "SasquatchMacSwift Today Extension/SasquatchMacSwift Today Extension.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "SasquatchMacSwift Today Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.microsoft.appcenter.sasquatchswift.mac.SasquatchMacSwift-Today-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		38AE580A2304CFB300F775AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "SasquatchMacSwift Today Extension/SasquatchMacSwift Today Extension.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "SasquatchMacSwift Today Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.microsoft.appcenter.sasquatchswift.mac.SasquatchMacSwift-Today-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
 		B2A4CFD2210A716E00199B4F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -825,6 +1090,7 @@
 		D3C31C6D1E8E763600B288CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_ENTITLEMENTS = SasquatchMacSwift/SasquatchMacSwift.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -838,6 +1104,7 @@
 		D3C31C6E1E8E763600B288CE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_ENTITLEMENTS = SasquatchMacSwift/SasquatchMacSwift.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -851,6 +1118,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		38AE580B2304CFB300F775AA /* Build configuration list for PBXNativeTarget "SasquatchMacSwift Today Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				38AE58092304CFB300F775AA /* Debug */,
+				38AE580A2304CFB300F775AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B2A4CFD1210A716E00199B4F /* Build configuration list for PBXNativeTarget "SasquatchMacObjC-Preview" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
