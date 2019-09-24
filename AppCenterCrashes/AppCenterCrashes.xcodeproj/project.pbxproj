@@ -1531,8 +1531,7 @@
 				TargetAttributes = {
 					C9A91F49230BFD930068070D = {
 						CreatedOnToolsVersion = 10.2.1;
-						DevelopmentTeam = 5Z97G9NZQ6;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					C9A91F52230BFDB40068070D = {
 						DevelopmentTeam = 5Z97G9NZQ6;
@@ -2174,6 +2173,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 049BC8251ECE36D400FB6719 /* iOS.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -2181,6 +2183,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 049BC8251ECE36D400FB6719 /* iOS.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
