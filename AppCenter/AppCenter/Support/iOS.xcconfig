@@ -2,4 +2,3 @@
 #include "../../../Config/Target config.xcconfig"
 
 OTHER_LDFLAGS = $(inherited) -framework CoreTelephony -framework UIKit -lsqlite3 -lz
-ENABLE_BITCODE = YES
