@@ -2,3 +2,4 @@
 #include "../../../Config/Target config.xcconfig"
 
 OTHER_LDFLAGS=$(inherited) -framework UIKit
+ENABLE_BITCODE = YES
